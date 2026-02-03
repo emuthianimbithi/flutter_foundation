@@ -13,6 +13,20 @@ This package intentionally does **not** decide your routes. You plug in a resolv
 
 Add as a path or git dependency.
 
+```yaml
+dependencies:
+  foundation_notifications:
+    path: packages/foundation_notifications
+  foundation_routing:
+    path: packages/foundation_routing
+  # If your notification payloads reference backend protos, add:
+  marulla_protos:
+    git:
+      url: https://github.com/emuthianimbithi/protos.git
+      ref: 0.0.1
+      path: gen/dart/marulla_protos
+```
+
 ## Usage (high level)
 
 1. Provide `NotificationRouteResolver` and `NotificationRouter` in your app.

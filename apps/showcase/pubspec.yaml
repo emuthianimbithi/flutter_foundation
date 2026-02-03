@@ -1,0 +1,50 @@
+name: showcase
+description: Demo app for Flutter Foundation packages.
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_riverpod: ^2.6.1
+
+  foundation_ui:
+    path: ../../packages/foundation_ui
+  foundation_forms:
+    path: ../../packages/foundation_forms
+  foundation_media:
+    path: ../../packages/foundation_media
+  foundation_notifications:
+    path: ../../packages/foundation_notifications
+  foundation_analytics:
+    path: ../../packages/foundation_analytics
+  foundation_calendar:
+    path: ../../packages/foundation_calendar
+  foundation_chat:
+    path: ../../packages/foundation_chat
+  foundation_payments:
+    path: ../../packages/foundation_payments
+
+  marulla_protos:
+    git:
+      url: https://github.com/emuthianimbithi/protos.git
+      ref: 0.0.1
+      path: gen/dart/marulla_protos
+
+dev_dependencies:
+  flutter_lints: ^3.0.2
+  flutter_test:
+    sdk: flutter
+
+dependency_overrides:
+  # marulla_protos (generated with older helpers) expects $_clearField/$_setField.
+  # protobuf 4.2.0 still exposes these private helpers, so we force that runtime.
+  protobuf: 4.2.0
+
+flutter:
+  uses-material-design: true

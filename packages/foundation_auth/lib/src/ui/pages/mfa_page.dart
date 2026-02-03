@@ -36,9 +36,9 @@ class _MfaPageState extends ConsumerState<MfaPage> {
   Future<void> _verify() async {
     setState(() => _loading = true);
     final res = await ref.read(authControllerProvider.notifier).verifyMfa(mfaToken: widget.mfaToken, method: _method, code: _code.text.trim());
-    if (!res.isOk) {
+    if (res.isFailure) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(res.error?.message ?? 'MFA verification failed')),
+        SnackBar(content: Text(res.failureOrNull?.message ?? 'MFA verification failed')),
       );
     }
     if (mounted) setState(() => _loading = false);

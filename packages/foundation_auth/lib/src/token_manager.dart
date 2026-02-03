@@ -32,8 +32,8 @@ class TokenManager {
     String? userId,
     String? role,
   }) async {
-    await secureStorage.write(key: AuthStorageKeys.accessToken, value: accessToken);
-    await secureStorage.write(key: AuthStorageKeys.refreshToken, value: refreshToken);
+    await secureStorage.write(AuthStorageKeys.accessToken, accessToken);
+    await secureStorage.write(AuthStorageKeys.refreshToken, refreshToken);
     await prefs.setString(AuthStorageKeys.accessExpiryIso, accessExpiry.toIso8601String());
     await prefs.setString(AuthStorageKeys.refreshExpiryIso, refreshExpiry.toIso8601String());
     if (orgSlug != null) await prefs.setString(AuthStorageKeys.orgSlug, orgSlug);
@@ -41,24 +41,31 @@ class TokenManager {
     if (role != null) await prefs.setString(AuthStorageKeys.role, role);
   }
 
-  Future<String?> getAccessToken() => secureStorage.read(key: AuthStorageKeys.accessToken);
-  Future<String?> getRefreshToken() => secureStorage.read(key: AuthStorageKeys.refreshToken);
+  Future<String?> getAccessToken() async {
+    final res = await secureStorage.read(AuthStorageKeys.accessToken);
+    return res.valueOrNull;
+  }
+
+  Future<String?> getRefreshToken() async {
+    final res = await secureStorage.read(AuthStorageKeys.refreshToken);
+    return res.valueOrNull;
+  }
 
   DateTime? _readIso(String? v) => v == null ? null : DateTime.tryParse(v);
 
   Future<DateTime?> getAccessExpiry() async =>
-      _readIso(await prefs.getString(AuthStorageKeys.accessExpiryIso));
+      _readIso(prefs.getString(AuthStorageKeys.accessExpiryIso));
 
   Future<DateTime?> getRefreshExpiry() async =>
-      _readIso(await prefs.getString(AuthStorageKeys.refreshExpiryIso));
+      _readIso(prefs.getString(AuthStorageKeys.refreshExpiryIso));
 
-  Future<String?> getOrgSlug() => prefs.getString(AuthStorageKeys.orgSlug);
-  Future<String?> getUserId() => prefs.getString(AuthStorageKeys.userId);
-  Future<String?> getRole() => prefs.getString(AuthStorageKeys.role);
+  Future<String?> getOrgSlug() async => prefs.getString(AuthStorageKeys.orgSlug);
+  Future<String?> getUserId() async => prefs.getString(AuthStorageKeys.userId);
+  Future<String?> getRole() async => prefs.getString(AuthStorageKeys.role);
 
   Future<void> clear() async {
-    await secureStorage.delete(key: AuthStorageKeys.accessToken);
-    await secureStorage.delete(key: AuthStorageKeys.refreshToken);
+    await secureStorage.delete(AuthStorageKeys.accessToken);
+    await secureStorage.delete(AuthStorageKeys.refreshToken);
     await prefs.remove(AuthStorageKeys.accessExpiryIso);
     await prefs.remove(AuthStorageKeys.refreshExpiryIso);
     await prefs.remove(AuthStorageKeys.orgSlug);

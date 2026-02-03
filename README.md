@@ -104,10 +104,12 @@ dependencies:
       ref: main
 
   # Your generated proto package
+  # Marulla generated protos (Dart stubs)
   marulla_protos:
     git:
-      url: https://github.com/emuthianimbithi/protos
-      path: gen/dart
+      url: https://github.com/emuthianimbithi/protos.git
+      ref: 0.0.1
+      path: gen/dart/marulla_protos
 ```
 
 ### Quick Start Example
@@ -170,6 +172,11 @@ melos run format
 
 # Generate code (build_runner)
 melos run generate
+
+# Run the showcase app (Chrome)
+cd apps/showcase
+flutter pub get
+flutter run -d chrome
 
 # Run CI checks
 melos run ci

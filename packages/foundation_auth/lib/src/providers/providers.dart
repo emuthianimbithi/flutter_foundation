@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foundation_auth/src/auth_controller.dart';
 import 'package:foundation_auth/src/auth_service.dart';
+import 'package:foundation_auth/src/auth_state.dart';
 import 'package:foundation_auth/src/session_manager.dart';
 import 'package:foundation_auth/src/token_manager.dart';
 import 'package:foundation_config/foundation_config.dart';

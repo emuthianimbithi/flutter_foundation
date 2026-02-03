@@ -16,8 +16,9 @@ Auth state machine + token/session management for Marulla SSO.
 dependencies:
   marulla_protos:
     git:
-      url: https://github.com/emuthianimbithi/protos
-      path: gen/dart
+      url: https://github.com/emuthianimbithi/protos.git
+      ref: 0.0.1
+      path: gen/dart/marulla_protos
 ```
 
 2) Provide `AppConfig` (from `foundation_config`) and `GrpcConfig` so the auth API knows where to connect.

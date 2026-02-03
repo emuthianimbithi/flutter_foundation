@@ -14,6 +14,11 @@ Add to your app:
 dependencies:
   foundation_routing:
     path: packages/foundation_routing
+  # optional if you navigate from notifications or auth state
+  foundation_auth:
+    path: packages/foundation_auth
+  foundation_notifications:
+    path: packages/foundation_notifications
 ```
 
 Override page builders via `appRouterConfigProvider`:
