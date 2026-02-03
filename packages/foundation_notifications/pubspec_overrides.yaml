@@ -1,0 +1,6 @@
+# melos_managed_dependency_overrides: foundation_config,foundation_core
+dependency_overrides:
+  foundation_config:
+    path: ../foundation_config
+  foundation_core:
+    path: ../foundation_core

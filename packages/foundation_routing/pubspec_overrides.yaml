@@ -1,0 +1,14 @@
+# melos_managed_dependency_overrides: foundation_auth,foundation_config,foundation_core,foundation_networking,foundation_storage,marulla_protos
+dependency_overrides:
+  foundation_auth:
+    path: ../foundation_auth
+  foundation_config:
+    path: ../foundation_config
+  foundation_core:
+    path: ../foundation_core
+  foundation_networking:
+    path: ../foundation_networking
+  foundation_storage:
+    path: ../foundation_storage
+  marulla_protos:
+    path: ../marulla_protos

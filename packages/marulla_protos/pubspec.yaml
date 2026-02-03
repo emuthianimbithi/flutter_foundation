@@ -1,9 +1,0 @@
-name: marulla_protos
-version: 0.0.1
-description: Minimal locally generated stubs for marulla protos (auth, mfa, forms).
-environment:
-  sdk: ">=3.0.0 <4.0.0"
-
-dependencies:
-  grpc: ^3.2.4
-  protobuf: ^3.1.0

@@ -1,0 +1,8 @@
+# melos_managed_dependency_overrides: foundation_device,foundation_media,foundation_ui
+dependency_overrides:
+  foundation_device:
+    path: ../foundation_device
+  foundation_media:
+    path: ../foundation_media
+  foundation_ui:
+    path: ../foundation_ui
