@@ -51,7 +51,8 @@ class StorageScope extends Equatable {
       );
 
   @override
-  List<Object?> get props => [userId, organizationId, organizationSlug, metadata];
+  List<Object?> get props =>
+      [userId, organizationId, organizationSlug, metadata];
 
   @override
   String toString() =>

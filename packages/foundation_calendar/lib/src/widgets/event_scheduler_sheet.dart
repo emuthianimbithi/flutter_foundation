@@ -16,7 +16,8 @@ class EventSchedulerSheet extends ConsumerStatefulWidget {
   }
 
   @override
-  ConsumerState<EventSchedulerSheet> createState() => _EventSchedulerSheetState();
+  ConsumerState<EventSchedulerSheet> createState() =>
+      _EventSchedulerSheetState();
 }
 
 class _EventSchedulerSheetState extends ConsumerState<EventSchedulerSheet> {
@@ -70,8 +71,12 @@ class _EventSchedulerSheetState extends ConsumerState<EventSchedulerSheet> {
                   label: 'Start: ${_hhmm(_start!)}',
                   variant: FoundationButtonVariant.secondary,
                   onPressed: () async {
-                    final t = await showTimePicker(context: context, initialTime: TimeOfDay.fromDateTime(_start!));
-                    if (t != null) setState(() => _start = DateTime(selected.year, selected.month, selected.day, t.hour, t.minute));
+                    final t = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.fromDateTime(_start!));
+                    if (t != null)
+                      setState(() => _start = DateTime(selected.year,
+                          selected.month, selected.day, t.hour, t.minute));
                   },
                 ),
               ),
@@ -81,8 +86,12 @@ class _EventSchedulerSheetState extends ConsumerState<EventSchedulerSheet> {
                   label: 'End: ${_hhmm(_end!)}',
                   variant: FoundationButtonVariant.secondary,
                   onPressed: () async {
-                    final t = await showTimePicker(context: context, initialTime: TimeOfDay.fromDateTime(_end!));
-                    if (t != null) setState(() => _end = DateTime(selected.year, selected.month, selected.day, t.hour, t.minute));
+                    final t = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.fromDateTime(_end!));
+                    if (t != null)
+                      setState(() => _end = DateTime(selected.year,
+                          selected.month, selected.day, t.hour, t.minute));
                   },
                 ),
               ),
@@ -109,5 +118,6 @@ class _EventSchedulerSheetState extends ConsumerState<EventSchedulerSheet> {
     );
   }
 
-  String _hhmm(DateTime d) => '${d.hour.toString().padLeft(2, '0')}:${d.minute.toString().padLeft(2, '0')}';
+  String _hhmm(DateTime d) =>
+      '${d.hour.toString().padLeft(2, '0')}:${d.minute.toString().padLeft(2, '0')}';
 }

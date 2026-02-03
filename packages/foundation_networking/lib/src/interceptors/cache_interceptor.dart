@@ -52,7 +52,10 @@ class CacheInterceptor extends Interceptor {
           headers: Headers.fromMap(
             cached.headers.map((k, v) => MapEntry(k, [v])),
           ),
-          extra: {'fromCache': true, 'cachedAt': cached.cachedAt.toIso8601String()},
+          extra: {
+            'fromCache': true,
+            'cachedAt': cached.cachedAt.toIso8601String()
+          },
         ),
       );
     }
@@ -101,8 +104,10 @@ class CacheInterceptor extends Interceptor {
       final cacheKey = _createCacheKey(err.requestOptions);
       final cached = await _getFromCache(cacheKey, allowStale: true);
 
-      if (cached != null && cached.isStaleWithin(_policy.staleWhileRevalidate)) {
-        _log.warning('Network error, returning stale cache: ${err.requestOptions.uri.path}');
+      if (cached != null &&
+          cached.isStaleWithin(_policy.staleWhileRevalidate)) {
+        _log.warning(
+            'Network error, returning stale cache: ${err.requestOptions.uri.path}');
         return handler.resolve(
           Response(
             requestOptions: err.requestOptions,
@@ -132,7 +137,8 @@ class CacheInterceptor extends Interceptor {
     );
   }
 
-  Future<CachedResponse?> _getFromCache(String key, {bool allowStale = false}) async {
+  Future<CachedResponse?> _getFromCache(String key,
+      {bool allowStale = false}) async {
     final value = await _database.getCachedValue(key);
     if (value == null) return null;
 

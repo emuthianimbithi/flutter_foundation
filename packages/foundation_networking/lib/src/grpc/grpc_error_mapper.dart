@@ -14,39 +14,29 @@ class GrpcErrorMapper {
 
     return switch (code) {
       StatusCode.ok => Failure.unexpected('Unexpected OK status'),
-
       StatusCode.cancelled => Failure.cancelled(message),
-
       StatusCode.unknown => Failure.unexpected(message, code: 'grpc_unknown'),
-
-      StatusCode.invalidArgument => Failure.validation(message, code: 'invalid_argument'),
-
+      StatusCode.invalidArgument =>
+        Failure.validation(message, code: 'invalid_argument'),
       StatusCode.deadlineExceeded => Failure.timeout(message),
-
       StatusCode.notFound => Failure.notFound(message, code: 'not_found'),
-
-      StatusCode.alreadyExists => Failure.conflict(message, code: 'already_exists'),
-
-      StatusCode.permissionDenied => Failure.authorization(message, code: 'permission_denied'),
-
+      StatusCode.alreadyExists =>
+        Failure.conflict(message, code: 'already_exists'),
+      StatusCode.permissionDenied =>
+        Failure.authorization(message, code: 'permission_denied'),
       StatusCode.resourceExhausted => Failure.rateLimit(message),
-
-      StatusCode.failedPrecondition => Failure.validation(message, code: 'failed_precondition'),
-
+      StatusCode.failedPrecondition =>
+        Failure.validation(message, code: 'failed_precondition'),
       StatusCode.aborted => Failure.conflict(message, code: 'aborted'),
-
-      StatusCode.outOfRange => Failure.validation(message, code: 'out_of_range'),
-
-      StatusCode.unimplemented => Failure.server(message, code: 'unimplemented'),
-
+      StatusCode.outOfRange =>
+        Failure.validation(message, code: 'out_of_range'),
+      StatusCode.unimplemented =>
+        Failure.server(message, code: 'unimplemented'),
       StatusCode.internal => Failure.server(message, code: 'internal'),
-
       StatusCode.unavailable => Failure.maintenance(message),
-
       StatusCode.dataLoss => Failure.server(message, code: 'data_loss'),
-
-      StatusCode.unauthenticated => Failure.authentication(message, code: 'unauthenticated'),
-
+      StatusCode.unauthenticated =>
+        Failure.authentication(message, code: 'unauthenticated'),
       _ => Failure.unexpected(message, code: 'grpc_$code'),
     };
   }
@@ -57,27 +47,26 @@ class GrpcErrorMapper {
     final code = error.code;
 
     return switch (code) {
-      StatusCode.cancelled => CancelledException(message: message, originalError: error),
-
-      StatusCode.deadlineExceeded => TimeoutException(message: message, originalError: error),
-
-      StatusCode.notFound => NotFoundException(message: message, originalError: error),
-
-      StatusCode.alreadyExists => ConflictException(message: message, originalError: error),
-
-      StatusCode.permissionDenied => ForbiddenException(message: message, originalError: error),
-
-      StatusCode.resourceExhausted => RateLimitException(message: message, originalError: error),
-
-      StatusCode.unauthenticated => UnauthorizedException(message: message, originalError: error),
-
-      StatusCode.unavailable => ServiceUnavailableException(message: message, originalError: error),
-
+      StatusCode.cancelled =>
+        CancelledException(message: message, originalError: error),
+      StatusCode.deadlineExceeded =>
+        TimeoutException(message: message, originalError: error),
+      StatusCode.notFound =>
+        NotFoundException(message: message, originalError: error),
+      StatusCode.alreadyExists =>
+        ConflictException(message: message, originalError: error),
+      StatusCode.permissionDenied =>
+        ForbiddenException(message: message, originalError: error),
+      StatusCode.resourceExhausted =>
+        RateLimitException(message: message, originalError: error),
+      StatusCode.unauthenticated =>
+        UnauthorizedException(message: message, originalError: error),
+      StatusCode.unavailable =>
+        ServiceUnavailableException(message: message, originalError: error),
       StatusCode.invalidArgument ||
       StatusCode.failedPrecondition ||
       StatusCode.outOfRange =>
         ValidationException(message: message, originalError: error),
-
       StatusCode.internal ||
       StatusCode.unimplemented ||
       StatusCode.dataLoss =>
@@ -86,7 +75,6 @@ class GrpcErrorMapper {
           statusCode: _grpcCodeToHttp(code),
           originalError: error,
         ),
-
       _ => UnknownNetworkException(message: message, originalError: error),
     };
   }

@@ -15,7 +15,8 @@ class PinnedHttpClient extends IOClient {
     final client = HttpClient();
 
     // Hook point: verify certificate details and compare against pins.
-    client.badCertificateCallback = (X509Certificate cert, String host, int port) {
+    client.badCertificateCallback =
+        (X509Certificate cert, String host, int port) {
       // You can compute SHA-256 of cert.der here and compare to pins.
       // We keep this as a strict placeholder: reject by default.
       return false;

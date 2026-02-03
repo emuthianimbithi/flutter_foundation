@@ -19,16 +19,28 @@ class PaypalPaymentServicePlaceholder implements PaymentService {
   }
 
   @override
+  Future<PaymentResult> confirmPayment(PaymentIntentModel intent) async {
+    return const PaymentResult(
+      status: PaymentStatus.failed,
+      message:
+          'PayPal adapter not configured. Provide a real PaypalPaymentService.',
+    );
+  }
+
+  @override
   Future<PaymentResult> pollStatus({
     required String intentId,
     Duration interval = const Duration(seconds: 2),
     Duration timeout = const Duration(minutes: 2),
   }) {
-    throw UnimplementedError('Integrate PayPal status polling.');
+    return Future.value(const PaymentResult(
+      status: PaymentStatus.failed,
+      message: 'PayPal status polling not configured.',
+    ));
   }
 
   @override
   Future<void> cancel(String intentId) {
-    throw UnimplementedError('Implement PayPal cancel.');
+    return Future.value();
   }
 }

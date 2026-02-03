@@ -37,12 +37,18 @@ part 'app_database.g.dart';
 )
 class AppDatabase extends _$AppDatabase {
   static final AppLogger _log = AppLogger('AppDatabase');
+  final String dbName;
+  String? _dbPath;
 
   /// Creates the database with the default connection.
-  AppDatabase() : super(_openConnection());
+  AppDatabase({String dbName = 'foundation.db', String? path})
+      : dbName = dbName,
+        super(path != null
+            ? _openPath(path, (p) => _dbPath = p)
+            : _openConnection(dbName, (p) => _dbPath = p));
 
   /// Creates the database with a custom connection (for testing).
-  AppDatabase.forTesting(super.connection);
+  AppDatabase.forTesting(super.connection) : dbName = 'memory';
 
   @override
   int get schemaVersion => 1;
@@ -75,9 +81,11 @@ class AppDatabase extends _$AppDatabase {
   // ─────────────────────────────────────────────────────────────
 
   /// Gets sync metadata for an entity.
-  Future<SyncMetadataData?> getSyncMetadata(String entityType, String entityId) {
+  Future<SyncMetadataData?> getSyncMetadata(
+      String entityType, String entityId) {
     return (select(syncMetadata)
-          ..where((t) => t.entityType.equals(entityType) & t.entityId.equals(entityId)))
+          ..where((t) =>
+              t.entityType.equals(entityType) & t.entityId.equals(entityId)))
         .getSingleOrNull();
   }
 
@@ -88,12 +96,14 @@ class AppDatabase extends _$AppDatabase {
 
   /// Gets all entities with pending sync.
   Future<List<SyncMetadataData>> getPendingSyncEntities() {
-    return (select(syncMetadata)..where((t) => t.syncStatus.equals('pending'))).get();
+    return (select(syncMetadata)..where((t) => t.syncStatus.equals('pending')))
+        .get();
   }
 
   /// Gets all entities with conflicts.
   Future<List<SyncMetadataData>> getConflictedEntities() {
-    return (select(syncMetadata)..where((t) => t.syncStatus.equals('conflict'))).get();
+    return (select(syncMetadata)..where((t) => t.syncStatus.equals('conflict')))
+        .get();
   }
 
   // ─────────────────────────────────────────────────────────────
@@ -119,9 +129,11 @@ class AppDatabase extends _$AppDatabase {
   }
 
   /// Gets operations for a specific entity.
-  Future<List<SyncQueueData>> getOperationsForEntity(String entityType, String entityId) {
+  Future<List<SyncQueueData>> getOperationsForEntity(
+      String entityType, String entityId) {
     return (select(syncQueue)
-          ..where((t) => t.entityType.equals(entityType) & t.entityId.equals(entityId)))
+          ..where((t) =>
+              t.entityType.equals(entityType) & t.entityId.equals(entityId)))
         .get();
   }
 
@@ -142,7 +154,9 @@ class AppDatabase extends _$AppDatabase {
 
   /// Clears the sync queue for an organization.
   Future<int> clearSyncQueueForOrg(String organizationId) {
-    return (delete(syncQueue)..where((t) => t.organizationId.equals(organizationId))).go();
+    return (delete(syncQueue)
+          ..where((t) => t.organizationId.equals(organizationId)))
+        .go();
   }
 
   // ─────────────────────────────────────────────────────────────
@@ -153,7 +167,9 @@ class AppDatabase extends _$AppDatabase {
   Future<String?> getCachedValue(String key) async {
     final result = await (select(keyValueCache)
           ..where((t) => t.key.equals(key))
-          ..where((t) => t.expiresAt.isNull() | t.expiresAt.isBiggerThanValue(DateTime.now())))
+          ..where((t) =>
+              t.expiresAt.isNull() |
+              t.expiresAt.isBiggerThanValue(DateTime.now())))
         .getSingleOrNull();
     return result?.value;
   }
@@ -168,12 +184,12 @@ class AppDatabase extends _$AppDatabase {
   }) {
     return into(keyValueCache).insertOnConflictUpdate(
       KeyValueCacheCompanion(
-        key: Value(key),
-        value: Value(value),
-        createdAt: Value(DateTime.now()),
-        expiresAt: Value(ttl != null ? DateTime.now().add(ttl) : null),
-        organizationId: Value(organizationId),
-        tags: Value(tags?.join(','))),
+          key: Value(key),
+          value: Value(value),
+          createdAt: Value(DateTime.now()),
+          expiresAt: Value(ttl != null ? DateTime.now().add(ttl) : null),
+          organizationId: Value(organizationId),
+          tags: Value(tags?.join(','))),
     );
   }
 
@@ -184,7 +200,9 @@ class AppDatabase extends _$AppDatabase {
 
   /// Deletes expired cache entries.
   Future<int> deleteExpiredCache() {
-    return (delete(keyValueCache)..where((t) => t.expiresAt.isSmallerThanValue(DateTime.now()))).go();
+    return (delete(keyValueCache)
+          ..where((t) => t.expiresAt.isSmallerThanValue(DateTime.now())))
+        .go();
   }
 
   /// Deletes cache entries by tag.
@@ -194,7 +212,9 @@ class AppDatabase extends _$AppDatabase {
 
   /// Clears cache for an organization.
   Future<int> clearCacheForOrg(String organizationId) {
-    return (delete(keyValueCache)..where((t) => t.organizationId.equals(organizationId))).go();
+    return (delete(keyValueCache)
+          ..where((t) => t.organizationId.equals(organizationId)))
+        .go();
   }
 
   // ─────────────────────────────────────────────────────────────
@@ -203,7 +223,8 @@ class AppDatabase extends _$AppDatabase {
 
   /// Gets a cached user.
   Future<CachedUsersData?> getCachedUser(String id) {
-    return (select(cachedUsers)..where((t) => t.id.equals(id))).getSingleOrNull();
+    return (select(cachedUsers)..where((t) => t.id.equals(id)))
+        .getSingleOrNull();
   }
 
   /// Upserts a cached user.
@@ -222,12 +243,14 @@ class AppDatabase extends _$AppDatabase {
 
   /// Gets a cached organization by ID.
   Future<CachedOrganizationsData?> getCachedOrganization(String id) {
-    return (select(cachedOrganizations)..where((t) => t.id.equals(id))).getSingleOrNull();
+    return (select(cachedOrganizations)..where((t) => t.id.equals(id)))
+        .getSingleOrNull();
   }
 
   /// Gets a cached organization by slug.
   Future<CachedOrganizationsData?> getCachedOrganizationBySlug(String slug) {
-    return (select(cachedOrganizations)..where((t) => t.slug.equals(slug))).getSingleOrNull();
+    return (select(cachedOrganizations)..where((t) => t.slug.equals(slug)))
+        .getSingleOrNull();
   }
 
   /// Upserts a cached organization.
@@ -258,13 +281,26 @@ class AppDatabase extends _$AppDatabase {
     await delete(cachedMemberships).go();
     await delete(pendingFiles).go();
   }
+
+  /// The resolved path of the database file (if using the default connection).
+  String? get path => _dbPath;
 }
 
 /// Opens the database connection.
-LazyDatabase _openConnection() {
+LazyDatabase _openConnection(
+    String dbName, void Function(String path) onPathResolved) {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'foundation.db'));
+    final file = File(p.join(dbFolder.path, dbName));
+    onPathResolved(file.path);
+    return NativeDatabase.createInBackground(file);
+  });
+}
+
+LazyDatabase _openPath(String path, void Function(String) onPathResolved) {
+  return LazyDatabase(() async {
+    final file = File(path);
+    onPathResolved(file.path);
     return NativeDatabase.createInBackground(file);
   });
 }

@@ -35,7 +35,9 @@ class ValidatedTextField extends ConsumerWidget {
       errorText: current.error,
       onChanged: (v) {
         final err = Validators.combine(v, validators);
-        ref.read(foundationFormControllerProvider.notifier).setText(fieldKey, v, error: err);
+        ref
+            .read(foundationFormControllerProvider.notifier)
+            .setText(fieldKey, v, error: err);
       },
     );
   }

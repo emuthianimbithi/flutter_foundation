@@ -281,7 +281,8 @@ class WebSocketClient {
           .clamp(0, _config.maxReconnectDelay.inMilliseconds),
     );
 
-    _log.info('Reconnecting in ${delay.inSeconds}s (attempt $_reconnectAttempts)');
+    _log.info(
+        'Reconnecting in ${delay.inSeconds}s (attempt $_reconnectAttempts)');
 
     _reconnectTimer = Timer(delay, () {
       connect();

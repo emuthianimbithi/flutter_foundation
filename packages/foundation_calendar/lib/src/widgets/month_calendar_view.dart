@@ -51,7 +51,8 @@ class MonthCalendarView extends ConsumerWidget {
               final n = countEvents(day);
 
               return GestureDetector(
-                onTap: () => ref.read(selectedDateProvider.notifier).state = day,
+                onTap: () =>
+                    ref.read(selectedDateProvider.notifier).state = day,
                 child: Container(
                   margin: EdgeInsets.all(tokens.space4),
                   decoration: BoxDecoration(
@@ -95,8 +96,18 @@ class MonthCalendarView extends ConsumerWidget {
 
   String _monthName(int m) {
     const names = [
-      'January','February','March','April','May','June',
-      'July','August','September','October','November','December'
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
     ];
     return names[m - 1];
   }

@@ -15,10 +15,12 @@ class PaymentForm extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(intent.description, style: Theme.of(context).textTheme.titleMedium),
+          Text(intent.description,
+              style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 16),
           FoundationButton.primary(
-            label: 'Pay ${intent.currency.toUpperCase()} ${(intent.amount / 100).toStringAsFixed(2)}',
+            label:
+                'Pay ${intent.currency.toUpperCase()} ${(intent.amount / 100).toStringAsFixed(2)}',
             onPressed: () async {
               final adapter = ref.read(paymentAdapterProvider);
               final result = await adapter.pay(intent);

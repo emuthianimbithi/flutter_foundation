@@ -11,14 +11,19 @@ sealed class AuthFailure extends Failure {
   });
 
   const factory AuthFailure.invalidCredentials() = InvalidCredentialsFailure;
-  const factory AuthFailure.emailVerificationRequired() = EmailVerificationRequiredFailure;
+  const factory AuthFailure.emailVerificationRequired() =
+      EmailVerificationRequiredFailure;
   const factory AuthFailure.accountSuspended() = AccountSuspendedFailure;
   const factory AuthFailure.accountInactive() = AccountInactiveFailure;
-  const factory AuthFailure.noOrganizationAccess() = NoOrganizationAccessFailure;
-  const factory AuthFailure.organizationNotFound() = OrganizationNotFoundFailure;
+  const factory AuthFailure.noOrganizationAccess() =
+      NoOrganizationAccessFailure;
+  const factory AuthFailure.organizationNotFound() =
+      OrganizationNotFoundFailure;
   const factory AuthFailure.mfaRequired() = MfaRequiredFailure;
-  const factory AuthFailure.network(String message, {String? code, Object? originalException}) = NetworkAuthFailure;
-  const factory AuthFailure.unknown(String message, {Object? originalException}) = UnknownAuthFailure;
+  const factory AuthFailure.network(String message,
+      {String? code, Object? originalException}) = NetworkAuthFailure;
+  const factory AuthFailure.unknown(String message,
+      {Object? originalException}) = UnknownAuthFailure;
 }
 
 final class InvalidCredentialsFailure extends AuthFailure {
@@ -85,7 +90,8 @@ final class MfaRequiredFailure extends AuthFailure {
 }
 
 final class NetworkAuthFailure extends AuthFailure {
-  const NetworkAuthFailure(String message, {super.code, super.originalException})
+  const NetworkAuthFailure(String message,
+      {super.code, super.originalException})
       : super(type: FailureType.network, message: message);
 }
 

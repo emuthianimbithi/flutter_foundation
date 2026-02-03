@@ -130,7 +130,8 @@ class FieldConflict extends Equatable {
   List<Object?> get props => [field, localValue, serverValue];
 
   @override
-  String toString() => 'FieldConflict($field: local=$localValue, server=$serverValue)';
+  String toString() =>
+      'FieldConflict($field: local=$localValue, server=$serverValue)';
 }
 
 /// How a conflict was resolved.

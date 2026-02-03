@@ -26,7 +26,9 @@ class OrgSelectorPage extends ConsumerWidget {
             title: Text(org.name),
             subtitle: Text(org.slug),
             onTap: () async {
-              await ref.read(authControllerProvider.notifier).selectOrganization(
+              await ref
+                  .read(authControllerProvider.notifier)
+                  .selectOrganization(
                     orgSelectionToken: orgSelectionToken,
                     orgSlug: org.slug,
                   );

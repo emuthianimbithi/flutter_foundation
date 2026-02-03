@@ -36,8 +36,10 @@ class ConnectivityMonitor {
     await _checkConnectivity();
 
     // Listen for changes
-    _subscription = _connectivity.onConnectivityChanged.listen(_onConnectivityChanged);
-    _log.debug('ConnectivityMonitor initialized: connected=$_isConnected, wifi=$_isWifi');
+    _subscription =
+        _connectivity.onConnectivityChanged.listen(_onConnectivityChanged);
+    _log.debug(
+        'ConnectivityMonitor initialized: connected=$_isConnected, wifi=$_isWifi');
   }
 
   Future<void> _checkConnectivity() async {
@@ -60,7 +62,8 @@ class ConnectivityMonitor {
         r == ConnectivityResult.ethernet);
 
     if (_isConnected != wasConnected) {
-      _log.info('Connectivity changed: connected=$_isConnected, wifi=$_isWifi, mobile=$_isMobile');
+      _log.info(
+          'Connectivity changed: connected=$_isConnected, wifi=$_isWifi, mobile=$_isMobile');
       _connectivityController.add(_isConnected);
     }
   }

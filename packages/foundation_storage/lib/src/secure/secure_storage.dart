@@ -55,7 +55,8 @@ class SecureStorage {
       return Result.success(unit);
     } catch (e, s) {
       _log.error('Failed to write key: $key', e, s);
-      return Result.failure(Failure.storage('Failed to write to secure storage', originalException: e));
+      return Result.failure(Failure.storage('Failed to write to secure storage',
+          originalException: e));
     }
   }
 
@@ -66,7 +67,9 @@ class SecureStorage {
       return Result.success(value);
     } catch (e, s) {
       _log.error('Failed to read key: $key', e, s);
-      return Result.failure(Failure.storage('Failed to read from secure storage', originalException: e));
+      return Result.failure(Failure.storage(
+          'Failed to read from secure storage',
+          originalException: e));
     }
   }
 
@@ -78,7 +81,9 @@ class SecureStorage {
       return Result.success(unit);
     } catch (e, s) {
       _log.error('Failed to delete key: $key', e, s);
-      return Result.failure(Failure.storage('Failed to delete from secure storage', originalException: e));
+      return Result.failure(Failure.storage(
+          'Failed to delete from secure storage',
+          originalException: e));
     }
   }
 
@@ -89,7 +94,8 @@ class SecureStorage {
       return Result.success(exists);
     } catch (e, s) {
       _log.error('Failed to check key: $key', e, s);
-      return Result.failure(Failure.storage('Failed to check secure storage', originalException: e));
+      return Result.failure(Failure.storage('Failed to check secure storage',
+          originalException: e));
     }
   }
 
@@ -100,7 +106,9 @@ class SecureStorage {
       return Result.success(all);
     } catch (e, s) {
       _log.error('Failed to read all', e, s);
-      return Result.failure(Failure.storage('Failed to read all from secure storage', originalException: e));
+      return Result.failure(Failure.storage(
+          'Failed to read all from secure storage',
+          originalException: e));
     }
   }
 
@@ -112,7 +120,8 @@ class SecureStorage {
       return Result.success(unit);
     } catch (e, s) {
       _log.error('Failed to delete all', e, s);
-      return Result.failure(Failure.storage('Failed to clear secure storage', originalException: e));
+      return Result.failure(Failure.storage('Failed to clear secure storage',
+          originalException: e));
     }
   }
 
@@ -127,7 +136,8 @@ class SecureStorage {
       return write(key, jsonString);
     } catch (e, s) {
       _log.error('Failed to encode JSON for key: $key', e, s);
-      return Result.failure(Failure.storage('Failed to encode JSON', originalException: e));
+      return Result.failure(
+          Failure.storage('Failed to encode JSON', originalException: e));
     }
   }
 
@@ -143,7 +153,8 @@ class SecureStorage {
           return Result.success(json);
         } catch (e, s) {
           _log.error('Failed to decode JSON for key: $key', e, s);
-          return Result.failure(Failure.storage('Failed to decode JSON', originalException: e));
+          return Result.failure(
+              Failure.storage('Failed to decode JSON', originalException: e));
         }
       },
     );
@@ -154,7 +165,8 @@ class SecureStorage {
   // ─────────────────────────────────────────────────────────────
 
   /// Sets the access token.
-  Future<Result<Unit>> setAccessToken(String token) => write(SecureStorageKeys.accessToken, token);
+  Future<Result<Unit>> setAccessToken(String token) =>
+      write(SecureStorageKeys.accessToken, token);
 
   /// Gets the access token.
   Future<String?> getAccessToken() async {
@@ -163,7 +175,8 @@ class SecureStorage {
   }
 
   /// Sets the refresh token.
-  Future<Result<Unit>> setRefreshToken(String token) => write(SecureStorageKeys.refreshToken, token);
+  Future<Result<Unit>> setRefreshToken(String token) =>
+      write(SecureStorageKeys.refreshToken, token);
 
   /// Gets the refresh token.
   Future<String?> getRefreshToken() async {
@@ -177,10 +190,12 @@ class SecureStorage {
     DateTime? refreshExpiry,
   }) async {
     if (accessExpiry != null) {
-      await write(SecureStorageKeys.accessTokenExpiry, accessExpiry.toIso8601String());
+      await write(
+          SecureStorageKeys.accessTokenExpiry, accessExpiry.toIso8601String());
     }
     if (refreshExpiry != null) {
-      await write(SecureStorageKeys.refreshTokenExpiry, refreshExpiry.toIso8601String());
+      await write(SecureStorageKeys.refreshTokenExpiry,
+          refreshExpiry.toIso8601String());
     }
     return Result.success(unit);
   }
@@ -225,7 +240,8 @@ class SecureStorage {
     await setAccessToken(accessToken);
     await setRefreshToken(refreshToken);
     if (accessExpiry != null || refreshExpiry != null) {
-      await setTokenExpiry(accessExpiry: accessExpiry, refreshExpiry: refreshExpiry);
+      await setTokenExpiry(
+          accessExpiry: accessExpiry, refreshExpiry: refreshExpiry);
     }
     return Result.success(unit);
   }
@@ -248,7 +264,8 @@ class SecureStorage {
   // ─────────────────────────────────────────────────────────────
 
   /// Sets the current user ID.
-  Future<Result<Unit>> setUserId(String userId) => write(SecureStorageKeys.userId, userId);
+  Future<Result<Unit>> setUserId(String userId) =>
+      write(SecureStorageKeys.userId, userId);
 
   /// Gets the current user ID.
   Future<String?> getUserId() async {
@@ -257,7 +274,8 @@ class SecureStorage {
   }
 
   /// Sets the current organization ID.
-  Future<Result<Unit>> setOrganizationId(String orgId) => write(SecureStorageKeys.organizationId, orgId);
+  Future<Result<Unit>> setOrganizationId(String orgId) =>
+      write(SecureStorageKeys.organizationId, orgId);
 
   /// Gets the current organization ID.
   Future<String?> getOrganizationId() async {
@@ -266,7 +284,8 @@ class SecureStorage {
   }
 
   /// Sets the current session ID.
-  Future<Result<Unit>> setSessionId(String sessionId) => write(SecureStorageKeys.sessionId, sessionId);
+  Future<Result<Unit>> setSessionId(String sessionId) =>
+      write(SecureStorageKeys.sessionId, sessionId);
 
   /// Gets the current session ID.
   Future<String?> getSessionId() async {
@@ -279,7 +298,8 @@ class SecureStorage {
   // ─────────────────────────────────────────────────────────────
 
   /// Sets the biometric secret (for biometric auth).
-  Future<Result<Unit>> setBiometricSecret(String secret) => write(SecureStorageKeys.biometricSecret, secret);
+  Future<Result<Unit>> setBiometricSecret(String secret) =>
+      write(SecureStorageKeys.biometricSecret, secret);
 
   /// Gets the biometric secret.
   Future<String?> getBiometricSecret() async {
@@ -288,5 +308,6 @@ class SecureStorage {
   }
 
   /// Clears the biometric secret.
-  Future<Result<Unit>> clearBiometricSecret() => delete(SecureStorageKeys.biometricSecret);
+  Future<Result<Unit>> clearBiometricSecret() =>
+      delete(SecureStorageKeys.biometricSecret);
 }

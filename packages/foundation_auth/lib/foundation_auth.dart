@@ -3,6 +3,7 @@ library foundation_auth;
 export 'src/auth_controller.dart';
 export 'src/auth_state.dart';
 export 'src/auth_errors.dart';
+export 'src/auth_options.dart';
 export 'src/auth_service.dart';
 export 'src/token_manager.dart';
 export 'src/session_manager.dart';

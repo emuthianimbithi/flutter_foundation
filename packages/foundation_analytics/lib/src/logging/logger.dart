@@ -18,7 +18,8 @@ class Logger {
   Future<void> error(String message, {Object? error, StackTrace? stackTrace}) =>
       _emit(LogLevel.error, message, error: error, stackTrace: stackTrace);
 
-  Future<void> _emit(LogLevel level, String message, {Object? error, StackTrace? stackTrace}) async {
+  Future<void> _emit(LogLevel level, String message,
+      {Object? error, StackTrace? stackTrace}) async {
     for (final sink in _sinks) {
       await sink.log(level, message, error: error, stackTrace: stackTrace);
     }

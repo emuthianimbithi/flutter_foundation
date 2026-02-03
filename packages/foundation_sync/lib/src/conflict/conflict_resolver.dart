@@ -88,7 +88,8 @@ class ConflictResolver {
       final fieldConflict = entry.value;
 
       // Check if field has a specific strategy
-      final fieldStrategy = _config.getStrategyForField(conflict.entityType, field);
+      final fieldStrategy =
+          _config.getStrategyForField(conflict.entityType, field);
 
       if (_config.isLocalOnlyField(field)) {
         merged[field] = fieldConflict.localValue;
@@ -118,7 +119,8 @@ class ConflictResolver {
     // If there are unresolved conflicts, need manual resolution
     if (unresolvedConflicts.isNotEmpty) {
       if (_config.manualResolver != null) {
-        _log.debug('${unresolvedConflicts.length} fields need manual resolution');
+        _log.debug(
+            '${unresolvedConflicts.length} fields need manual resolution');
         return _resolveManual(conflict);
       } else {
         // Fall back to server wins for unresolved
@@ -139,7 +141,8 @@ class ConflictResolver {
   /// Resolves manually using the configured resolver.
   Future<ConflictResolution> _resolveManual(SyncConflict conflict) async {
     if (_config.manualResolver == null) {
-      _log.warning('No manual resolver configured, falling back to server wins');
+      _log.warning(
+          'No manual resolver configured, falling back to server wins');
       return _resolveServerWins(conflict);
     }
 
@@ -150,7 +153,13 @@ class ConflictResolver {
   /// Extracts timestamp from data.
   DateTime? _getTimestamp(Map<String, dynamic> data) {
     // Check common timestamp field names
-    final timestampFields = ['updated_at', 'updatedAt', 'modified_at', 'modifiedAt', 'timestamp'];
+    final timestampFields = [
+      'updated_at',
+      'updatedAt',
+      'modified_at',
+      'modifiedAt',
+      'timestamp'
+    ];
 
     for (final field in timestampFields) {
       final value = data[field];
@@ -187,11 +196,13 @@ class ConflictResolver {
       }
       // Check if all conflicting fields have specific strategies
       for (final field in conflict.conflictingFields.keys) {
-        final fieldStrategy = _config.getStrategyForField(conflict.entityType, field);
+        final fieldStrategy =
+            _config.getStrategyForField(conflict.entityType, field);
         if (fieldStrategy == ConflictStrategy.manual) {
           return false;
         }
-        if (!_config.isLocalOnlyField(field) && !_config.isServerOnlyField(field)) {
+        if (!_config.isLocalOnlyField(field) &&
+            !_config.isServerOnlyField(field)) {
           if (fieldStrategy == ConflictStrategy.merge) {
             return false;
           }

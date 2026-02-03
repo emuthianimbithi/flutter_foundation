@@ -8,7 +8,8 @@ class BiometricService {
   Future<bool> authenticate({required String reason}) async {
     return _auth.authenticate(
       localizedReason: reason,
-      options: const AuthenticationOptions(biometricOnly: true, stickyAuth: true),
+      options:
+          const AuthenticationOptions(biometricOnly: true, stickyAuth: true),
     );
   }
 }

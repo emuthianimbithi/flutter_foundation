@@ -4,7 +4,8 @@ import '../models/map_location.dart';
 class LocationService {
   Future<bool> isLocationEnabled() => Geolocator.isLocationServiceEnabled();
 
-  Future<LocationPermission> requestPermission() => Geolocator.requestPermission();
+  Future<LocationPermission> requestPermission() =>
+      Geolocator.requestPermission();
 
   Future<MapLocation> getCurrentLocation() async {
     final pos = await Geolocator.getCurrentPosition();

@@ -206,7 +206,8 @@ class GrpcLoggingInterceptor extends ClientInterceptor {
       },
       onError: (error) {
         stopwatch.stop();
-        _log.error('✕ ${method.path} [${stopwatch.elapsedMilliseconds}ms]', error);
+        _log.error(
+            '✕ ${method.path} [${stopwatch.elapsedMilliseconds}ms]', error);
       },
     );
 

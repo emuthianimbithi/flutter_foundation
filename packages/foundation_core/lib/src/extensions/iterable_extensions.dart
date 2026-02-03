@@ -229,10 +229,12 @@ extension IterableNullableExtensions<T> on Iterable<T?> {
 /// Extension methods for [Iterable] of [Comparable] elements.
 extension IterableComparableExtensions<T extends Comparable<T>> on Iterable<T> {
   /// Returns the minimum element or null if empty.
-  T? get minOrNull => isEmpty ? null : reduce((a, b) => a.compareTo(b) < 0 ? a : b);
+  T? get minOrNull =>
+      isEmpty ? null : reduce((a, b) => a.compareTo(b) < 0 ? a : b);
 
   /// Returns the maximum element or null if empty.
-  T? get maxOrNull => isEmpty ? null : reduce((a, b) => a.compareTo(b) > 0 ? a : b);
+  T? get maxOrNull =>
+      isEmpty ? null : reduce((a, b) => a.compareTo(b) > 0 ? a : b);
 
   /// Returns a sorted list in ascending order.
   List<T> sorted() => toList()..sort();

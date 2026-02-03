@@ -9,7 +9,8 @@ class VideoPlayerPlaceholder extends StatelessWidget {
   final String sourceLabel;
   final VoidCallback? onTap;
 
-  const VideoPlayerPlaceholder({super.key, required this.sourceLabel, this.onTap});
+  const VideoPlayerPlaceholder(
+      {super.key, required this.sourceLabel, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,8 @@ class VideoPlayerPlaceholder extends StatelessWidget {
         height: 200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(tokens.radiusMd),
-          border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+          border:
+              Border.all(color: Theme.of(context).colorScheme.outlineVariant),
         ),
         child: Center(
           child: Column(

@@ -7,7 +7,9 @@ class CrashService {
 
   Future<void> setUser(String? userId) => _reporter.setUserId(userId);
 
-  Future<void> record(Object error, StackTrace stackTrace, {String? reason, bool fatal = false}) {
-    return _reporter.recordError(error, stackTrace, reason: reason, fatal: fatal);
+  Future<void> record(Object error, StackTrace stackTrace,
+      {String? reason, bool fatal = false}) {
+    return _reporter.recordError(error, stackTrace,
+        reason: reason, fatal: fatal);
   }
 }

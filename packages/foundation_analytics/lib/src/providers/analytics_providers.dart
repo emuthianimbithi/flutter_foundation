@@ -8,13 +8,15 @@ import '../logging/logger.dart';
 import '../logging/log_sink.dart';
 
 /// Override these in the app to plug in Firebase, Sentry, Segment, etc.
-final analyticsClientProvider = Provider<AnalyticsClient>((ref) => const NoopAnalyticsClient());
+final analyticsClientProvider =
+    Provider<AnalyticsClient>((ref) => const NoopAnalyticsClient());
 
 final analyticsServiceProvider = Provider<AnalyticsService>((ref) {
   return AnalyticsService(ref.watch(analyticsClientProvider));
 });
 
-final crashReporterProvider = Provider<CrashReporter>((ref) => const NoopCrashReporter());
+final crashReporterProvider =
+    Provider<CrashReporter>((ref) => const NoopCrashReporter());
 
 final crashServiceProvider = Provider<CrashService>((ref) {
   return CrashService(ref.watch(crashReporterProvider));

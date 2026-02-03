@@ -10,7 +10,8 @@ class DayCalendarView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selected = ref.watch(selectedDateProvider).dateOnly;
-    final events = ref.watch(eventsProvider)
+    final events = ref
+        .watch(eventsProvider)
         .where((e) => e.start.dateOnly == selected)
         .toList()
       ..sort((a, b) => a.start.compareTo(b.start));
@@ -63,5 +64,6 @@ class DayCalendarView extends ConsumerWidget {
     );
   }
 
-  String _hhmm(DateTime d) => '${d.hour.toString().padLeft(2, '0')}:${d.minute.toString().padLeft(2, '0')}';
+  String _hhmm(DateTime d) =>
+      '${d.hour.toString().padLeft(2, '0')}:${d.minute.toString().padLeft(2, '0')}';
 }

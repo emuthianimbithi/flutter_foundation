@@ -1,29 +1,38 @@
 # foundation_auth
 
-Auth state machine + token/session management for Marulla SSO.
+Headless auth state machine for Marulla SSO: token persistence, refresh, org-selection, MFA, and Riverpod providers.
 
-## What this package provides
-- A Riverpod-driven auth controller (`authControllerProvider`)
-- A deterministic auth state machine:
-  - unauthenticated → (org selection?) → (mfa?) → authenticated
-- Token persistence via `foundation_storage`
-- gRPC-first API adapter using your generated Dart protos (`marulla_protos`)
+## Happy path (with foundation_bootstrap)
+- Call `FoundationBootstrap.initialize(...)`
+- Wrap app with `ProviderScope(overrides: FoundationBootstrap.overrides())`
+- Use `authStateProvider` in router/UI; defaults to auth-driven routing.
 
-## How to wire it in your app
-1) Add your protos dependency in the app (or melos workspace overrides), e.g.
+## Token restore + refresh
+- On startup `SessionManager.restore()` loads tokens from secure storage/prefs.
+- If access token expires within `AuthOptions.refreshLeeway` and refresh token is valid, `AuthService.refresh()` runs.
+- Refresh is coalesced: concurrent refresh calls execute the RPC exactly once.
 
-```yaml
-dependencies:
-  marulla_protos:
-    git:
-      url: https://github.com/emuthianimbithi/protos.git
-      ref: 0.0.1
-      path: gen/dart/marulla_protos
+## Override providers
+```dart
+ProviderScope(
+  overrides: [
+    authOptionsProvider.overrideWithValue(
+      const AuthOptions(refreshLeeway: Duration(seconds: 10), logoutClearsStorage: false),
+    ),
+    grpcChannelFactoryProvider.overrideWithValue(myGrpcFactory),
+    authServiceProvider.overrideWith((ref) => MyAuthService(...)),
+  ],
+  child: MyApp(),
+);
 ```
 
-2) Provide `AppConfig` (from `foundation_config`) and `GrpcConfig` so the auth API knows where to connect.
+## MFA
+- Default flow supports TOTP/recovery via `MfaPage` when backend signals `requiresMfa`.
+- If backend does not require MFA, login completes normally.
 
-3) Listen to `authStateProvider` and route accordingly.
+## Failures
+- Refresh with missing/expired refresh token -> `AuthState.unauthenticated(message)`
+- Unsupported MFA method -> `GrpcError.invalidArgument`
 
-## Notes
-- MFA verification RPC is not included in the snippet you shared; `verifyMfa(...)` is left as a placeholder to wire once the proto is available.
+## Tests
+- `test/auth_refresh_test.dart` covers refresh coalescing, leeway, and logout clearing.

@@ -90,7 +90,8 @@ class CachePolicy {
   }
 
   /// Creates a cache key for a request.
-  String createCacheKey(String method, String url, {Map<String, dynamic>? body}) {
+  String createCacheKey(String method, String url,
+      {Map<String, dynamic>? body}) {
     var key = '${method.toUpperCase()}:$url';
     if (body != null && body.isNotEmpty) {
       key += ':${body.hashCode}';

@@ -9,8 +9,12 @@ class MessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final bg = message.isMine ? theme.colorScheme.primary : theme.colorScheme.surfaceVariant;
-    final fg = message.isMine ? theme.colorScheme.onPrimary : theme.colorScheme.onSurfaceVariant;
+    final bg = message.isMine
+        ? theme.colorScheme.primary
+        : theme.colorScheme.surfaceVariant;
+    final fg = message.isMine
+        ? theme.colorScheme.onPrimary
+        : theme.colorScheme.onSurfaceVariant;
 
     return Align(
       alignment: message.isMine ? Alignment.centerRight : Alignment.centerLeft,

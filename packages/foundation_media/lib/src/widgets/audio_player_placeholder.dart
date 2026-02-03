@@ -9,7 +9,8 @@ class AudioPlayerPlaceholder extends StatelessWidget {
   final String sourceLabel;
   final VoidCallback? onTap;
 
-  const AudioPlayerPlaceholder({super.key, required this.sourceLabel, this.onTap});
+  const AudioPlayerPlaceholder(
+      {super.key, required this.sourceLabel, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,8 @@ class AudioPlayerPlaceholder extends StatelessWidget {
         padding: EdgeInsets.all(tokens.space16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(tokens.radiusMd),
-          border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+          border:
+              Border.all(color: Theme.of(context).colorScheme.outlineVariant),
         ),
         child: Row(
           children: [

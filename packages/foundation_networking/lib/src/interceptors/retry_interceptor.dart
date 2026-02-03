@@ -19,7 +19,8 @@ class RetryInterceptor extends Interceptor {
         _policy = policy ?? RetryPolicy.defaults();
 
   @override
-  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
+  Future<void> onError(
+      DioException err, ErrorInterceptorHandler handler) async {
     // Get current attempt from extra
     final attempt = (err.requestOptions.extra['retryAttempt'] as int?) ?? 0;
 

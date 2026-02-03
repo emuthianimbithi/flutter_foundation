@@ -1,20 +1,28 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foundation_auth/src/auth_options.dart';
 import 'package:foundation_auth/src/auth_service.dart';
 import 'package:foundation_auth/src/auth_state.dart';
 import 'package:foundation_auth/src/session_manager.dart';
 import 'package:foundation_auth/src/token_manager.dart';
 import 'package:foundation_core/foundation_core.dart';
+import 'package:foundation_storage/foundation_storage.dart';
 
 /// Controls the auth state machine and exposes actions to the UI/router.
 class AuthController extends StateNotifier<AuthState> {
   final AuthService _authService;
   final TokenManager _tokenManager;
+  final AuthOptions _options;
+  final Future<void> Function()? _clearStorage;
 
   AuthController({
     required AuthService authService,
     required TokenManager tokenManager,
+    AuthOptions options = const AuthOptions(),
+    Future<void> Function()? clearStorage,
   })  : _authService = authService,
         _tokenManager = tokenManager,
+        _options = options,
+        _clearStorage = clearStorage,
         super(const AuthState.unauthenticated());
 
   Future<void> restoreSession(SessionManager sessionManager) async {
@@ -22,7 +30,8 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       state = await sessionManager.restore();
     } catch (e) {
-      state = const AuthState.unauthenticated(message: 'Failed to restore session');
+      state =
+          const AuthState.unauthenticated(message: 'Failed to restore session');
     }
   }
 
@@ -33,7 +42,8 @@ class AuthController extends StateNotifier<AuthState> {
   }) async {
     state = const AuthState.authenticating();
     try {
-      state = await _authService.login(email: email, password: password, orgSlug: orgSlug);
+      state = await _authService.login(
+          email: email, password: password, orgSlug: orgSlug);
       return Result.success(null);
     } catch (e) {
       state = const AuthState.unauthenticated(message: 'Login failed');
@@ -53,7 +63,8 @@ class AuthController extends StateNotifier<AuthState> {
       );
       return Result.success(null);
     } catch (e) {
-      state = const AuthState.unauthenticated(message: 'Organization selection failed');
+      state = const AuthState.unauthenticated(
+          message: 'Organization selection failed');
       return Result.failure(Failure.unexpected(e.toString()));
     }
   }
@@ -68,16 +79,19 @@ class AuthController extends StateNotifier<AuthState> {
     final prior = state;
     state = const AuthState.authenticating();
     try {
-      state = await _authService.verifyMfa(mfaToken: mfaToken, method: method, code: code);
+      state = await _authService.verifyMfa(
+          mfaToken: mfaToken, method: method, code: code);
       return Result.success(null);
     } catch (e) {
       if (prior.phase == AuthPhase.requiresMfa) {
         state = AuthState.requiresMfa(
           mfaToken: prior.mfaToken ?? mfaToken,
-          methods: prior.mfaMethods.isNotEmpty ? prior.mfaMethods : <String>[method],
+          methods:
+              prior.mfaMethods.isNotEmpty ? prior.mfaMethods : <String>[method],
         );
       } else {
-        state = const AuthState.unauthenticated(message: 'MFA verification failed');
+        state =
+            const AuthState.unauthenticated(message: 'MFA verification failed');
       }
       return Result.failure(Failure.unexpected(e.toString()));
     }
@@ -105,7 +119,8 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  Future<Result<void>> disableTotp({required String password, required String code}) async {
+  Future<Result<void>> disableTotp(
+      {required String password, required String code}) async {
     try {
       await _authService.disableTotp(password: password, code: code);
       return Result.success(null);
@@ -114,9 +129,11 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  Future<Result<List<String>>> generateRecoveryCodes({required String password}) async {
+  Future<Result<List<String>>> generateRecoveryCodes(
+      {required String password}) async {
     try {
-      final codes = await _authService.generateRecoveryCodes(password: password);
+      final codes =
+          await _authService.generateRecoveryCodes(password: password);
       return Result.success(codes);
     } catch (e) {
       return Result.failure(Failure.unexpected(e.toString()));
@@ -131,7 +148,6 @@ class AuthController extends StateNotifier<AuthState> {
       return Result.failure(Failure.unexpected(e.toString()));
     }
   }
-
 
   Future<Result<void>> switchOrganization({required String orgSlug}) async {
     state = const AuthState.authenticating();
@@ -148,6 +164,19 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       await _authService.logout(refreshToken: refresh);
     } finally {
+      if (_options.logoutClearsStorage) {
+        try {
+          if (_clearStorage != null) {
+            await _clearStorage!();
+          } else {
+            await StorageInitializer.clearAll();
+          }
+        } catch (_) {
+          await _tokenManager.clear();
+        }
+      } else {
+        await _tokenManager.clear();
+      }
       state = const AuthState.unauthenticated();
     }
   }

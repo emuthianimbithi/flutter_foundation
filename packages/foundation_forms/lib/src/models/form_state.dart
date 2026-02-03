@@ -11,7 +11,8 @@ class FoundationFormState {
     return FoundationFormFieldState<T>(value: initial);
   }
 
-  FoundationFormState setField<T>(String key, FoundationFormFieldState<T> state) {
+  FoundationFormState setField<T>(
+      String key, FoundationFormFieldState<T> state) {
     return FoundationFormState(fields: {...fields, key: state});
   }
 

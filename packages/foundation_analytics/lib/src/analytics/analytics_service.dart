@@ -6,7 +6,8 @@ class AnalyticsService {
 
   const AnalyticsService(this._client);
 
-  Future<void> identify({String? userId, Map<String, Object?> properties = const {}}) async {
+  Future<void> identify(
+      {String? userId, Map<String, Object?> properties = const {}}) async {
     await _client.setUserId(userId);
     if (properties.isNotEmpty) {
       await _client.setUserProperties(properties);

@@ -39,7 +39,10 @@ class FeatureFlagsPage extends ConsumerWidget {
                 Switch(
                   value: enabled,
                   onChanged: (v) {
-                    ref.read(featureFlagsStateProvider.notifier).state = {...flags, f.key: v};
+                    ref.read(featureFlagsStateProvider.notifier).state = {
+                      ...flags,
+                      f.key: v
+                    };
                   },
                 ),
               ],

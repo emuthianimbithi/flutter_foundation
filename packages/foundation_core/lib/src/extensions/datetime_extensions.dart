@@ -31,7 +31,8 @@ extension DateTimeExtensions on DateTime {
   bool get isFuture => isAfter(DateTime.now());
 
   /// Whether this date is on a weekend.
-  bool get isWeekend => weekday == DateTime.saturday || weekday == DateTime.sunday;
+  bool get isWeekend =>
+      weekday == DateTime.saturday || weekday == DateTime.sunday;
 
   /// Whether this date is on a weekday.
   bool get isWeekday => !isWeekend;
@@ -40,7 +41,8 @@ extension DateTimeExtensions on DateTime {
   DateTime get dateOnly => DateTime(year, month, day);
 
   /// Returns the time only as a Duration from midnight.
-  Duration get timeOnly => Duration(hours: hour, minutes: minute, seconds: second);
+  Duration get timeOnly =>
+      Duration(hours: hour, minutes: minute, seconds: second);
 
   /// Returns the start of this day (midnight).
   DateTime get startOfDay => DateTime(year, month, day);

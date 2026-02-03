@@ -124,7 +124,8 @@ class CachedUsers extends Table {
   TextColumn get avatarUrl => text().nullable()();
 
   /// Whether email is verified.
-  BoolColumn get emailVerified => boolean().withDefault(const Constant(false))();
+  BoolColumn get emailVerified =>
+      boolean().withDefault(const Constant(false))();
 
   /// User status.
   TextColumn get status => text().withDefault(const Constant('active'))();

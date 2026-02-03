@@ -20,12 +20,21 @@ class FoundationTypography extends ThemeExtension<FoundationTypography> {
 
   factory FoundationTypography.defaults(TextTheme base) {
     return FoundationTypography(
-      h1: (base.headlineLarge ?? const TextStyle(fontSize: 32, fontWeight: FontWeight.w700)).copyWith(height: 1.15),
-      h2: (base.headlineMedium ?? const TextStyle(fontSize: 24, fontWeight: FontWeight.w700)).copyWith(height: 1.2),
-      h3: (base.titleLarge ?? const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)).copyWith(height: 1.25),
-      body: (base.bodyMedium ?? const TextStyle(fontSize: 14)).copyWith(height: 1.35),
-      bodyStrong: (base.bodyMedium ?? const TextStyle(fontSize: 14)).copyWith(fontWeight: FontWeight.w600, height: 1.35),
-      caption: (base.bodySmall ?? const TextStyle(fontSize: 12)).copyWith(height: 1.25),
+      h1: (base.headlineLarge ??
+              const TextStyle(fontSize: 32, fontWeight: FontWeight.w700))
+          .copyWith(height: 1.15),
+      h2: (base.headlineMedium ??
+              const TextStyle(fontSize: 24, fontWeight: FontWeight.w700))
+          .copyWith(height: 1.2),
+      h3: (base.titleLarge ??
+              const TextStyle(fontSize: 18, fontWeight: FontWeight.w600))
+          .copyWith(height: 1.25),
+      body: (base.bodyMedium ?? const TextStyle(fontSize: 14))
+          .copyWith(height: 1.35),
+      bodyStrong: (base.bodyMedium ?? const TextStyle(fontSize: 14))
+          .copyWith(fontWeight: FontWeight.w600, height: 1.35),
+      caption: (base.bodySmall ?? const TextStyle(fontSize: 12))
+          .copyWith(height: 1.25),
     );
   }
 
@@ -49,7 +58,8 @@ class FoundationTypography extends ThemeExtension<FoundationTypography> {
   }
 
   @override
-  FoundationTypography lerp(ThemeExtension<FoundationTypography>? other, double t) {
+  FoundationTypography lerp(
+      ThemeExtension<FoundationTypography>? other, double t) {
     if (other is! FoundationTypography) return this;
     return FoundationTypography(
       h1: TextStyle.lerp(h1, other.h1, t)!,

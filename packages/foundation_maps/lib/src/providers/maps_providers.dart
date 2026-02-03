@@ -3,6 +3,8 @@ import '../location/location_service.dart';
 
 enum MapProviderType { google, mapbox }
 
-final mapProviderTypeProvider = StateProvider<MapProviderType>((ref) => MapProviderType.google);
+final mapProviderTypeProvider =
+    StateProvider<MapProviderType>((ref) => MapProviderType.google);
 
-final locationServiceProvider = Provider<LocationService>((ref) => LocationService());
+final locationServiceProvider =
+    Provider<LocationService>((ref) => LocationService());

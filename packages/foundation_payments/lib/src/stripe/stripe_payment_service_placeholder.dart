@@ -32,4 +32,12 @@ class StripePaymentServicePlaceholder implements PaymentService {
   Future<void> cancel(String intentId) {
     throw UnimplementedError('Integrate Stripe cancel endpoint.');
   }
+
+  @override
+  Future<PaymentResult> confirmPayment(PaymentIntentModel intent) {
+    return Future.value(const PaymentResult(
+      status: PaymentStatus.failed,
+      message: 'Stripe placeholder cannot confirm payments.',
+    ));
+  }
 }

@@ -36,7 +36,10 @@ class EmptyState extends StatelessWidget {
             Text(description, style: t.body, textAlign: TextAlign.center),
             if (actionLabel != null && onAction != null) ...[
               SizedBox(height: tokens.space16),
-              FoundationButton(label: actionLabel!, onPressed: onAction, variant: FoundationButtonVariant.secondary),
+              FoundationButton(
+                  label: actionLabel!,
+                  onPressed: onAction,
+                  variant: FoundationButtonVariant.secondary),
             ],
           ],
         ),

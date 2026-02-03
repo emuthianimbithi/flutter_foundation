@@ -8,5 +8,6 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.5.1
+  flutter_stripe: ^10.0.0
   foundation_ui:
     path: ../foundation_ui

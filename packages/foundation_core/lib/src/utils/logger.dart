@@ -42,7 +42,9 @@ class AppLogger {
       lineLength: 120,
       colors: true,
       printEmojis: printEmoji,
-      dateTimeFormat: printTime ? pkg_logger.DateTimeFormat.onlyTimeAndSinceStart : pkg_logger.DateTimeFormat.none,
+      dateTimeFormat: printTime
+          ? pkg_logger.DateTimeFormat.onlyTimeAndSinceStart
+          : pkg_logger.DateTimeFormat.none,
     );
 
     _logger = pkg_logger.Logger(
@@ -120,7 +122,8 @@ class AppLogger {
   }
 
   /// Logs a message at the specified level.
-  void log(LogLevel level, String message, [dynamic error, StackTrace? stackTrace]) {
+  void log(LogLevel level, String message,
+      [dynamic error, StackTrace? stackTrace]) {
     switch (level) {
       case LogLevel.trace:
         trace(message, error, stackTrace);

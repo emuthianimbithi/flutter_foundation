@@ -21,17 +21,3 @@ abstract final class AppRoutes {
   static const home = '/home';
   static const forbidden = '/forbidden';
 }
-
-/// Simple placeholder pages.
-///
-/// You should override these by supplying builders to [AppRouterConfig].
-class PlaceholderPage extends StatelessWidget {
-  final String title;
-  const PlaceholderPage(this.title, {super.key});
-
-  @override
-  Widget build(BuildContext context) => Directionality(
-        textDirection: TextDirection.ltr,
-        child: Center(child: Text(title)),
-      );
-}

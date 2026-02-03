@@ -46,13 +46,15 @@ class FileCache {
     Map<String, String>? metadata,
   }) async {
     // Save the file
-    final result = await _storage.saveFile(subdirectory, filename, bytes, cache: true);
+    final result =
+        await _storage.saveFile(subdirectory, filename, bytes, cache: true);
     if (result.isFailure) return Result.failure(result.failure);
 
     // Save metadata if TTL is specified
     if (ttl != null || metadata != null) {
       final meta = {
-        if (ttl != null) 'expires_at': DateTime.now().add(ttl).toIso8601String(),
+        if (ttl != null)
+          'expires_at': DateTime.now().add(ttl).toIso8601String(),
         if (metadata != null) ...metadata,
       };
       await _storage.saveTextFile(
@@ -103,7 +105,8 @@ class FileCache {
       return Result.success(bytes);
     } catch (e, s) {
       _log.error('Failed to fetch: $subdirectory/$filename', e, s);
-      return Result.failure(Failure.cache('Failed to fetch and cache', originalException: e));
+      return Result.failure(
+          Failure.cache('Failed to fetch and cache', originalException: e));
     }
   }
 
@@ -138,7 +141,8 @@ class FileCache {
   /// Removes a cache entry.
   Future<Result<Unit>> remove(String subdirectory, String filename) async {
     await _storage.deleteFile(subdirectory, filename, cache: true);
-    await _storage.deleteFile(subdirectory, '$filename$_metaExtension', cache: true);
+    await _storage.deleteFile(subdirectory, '$filename$_metaExtension',
+        cache: true);
     return Result.success(unit);
   }
 
@@ -178,7 +182,8 @@ class FileCache {
   // ─────────────────────────────────────────────────────────────
 
   /// Gets metadata for a cache entry.
-  Future<Map<String, String>?> getMetadata(String subdirectory, String filename) async {
+  Future<Map<String, String>?> getMetadata(
+      String subdirectory, String filename) async {
     final result = await _storage.readTextFile(
       subdirectory,
       '$filename$_metaExtension',
@@ -213,7 +218,8 @@ class FileCache {
     final bytes = await getTotalSize();
     if (bytes < 1024) return '$bytes B';
     if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
-    if (bytes < 1024 * 1024 * 1024) return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+    if (bytes < 1024 * 1024 * 1024)
+      return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
     return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
   }
 }

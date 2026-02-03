@@ -5,7 +5,7 @@ packages:
   - packages/**
   - apps/**
 
-sdkPath: .fvm/flutter_sdk
+#sdkPath: .fvm/flutter_sdk
 
 command:
   version:

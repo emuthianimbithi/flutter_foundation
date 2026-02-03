@@ -35,7 +35,8 @@ class SyncQueue {
 
   /// Adds an operation to the queue.
   Future<int> enqueue(SyncOperation operation) async {
-    _log.debug('Enqueuing: ${operation.operation.name} ${operation.entityType}:${operation.entityId}');
+    _log.debug(
+        'Enqueuing: ${operation.operation.name} ${operation.entityType}:${operation.entityId}');
 
     final id = await _database.addToSyncQueue(
       SyncQueueCompanion(
@@ -62,7 +63,8 @@ class SyncQueue {
   }
 
   /// Gets operations for a specific entity.
-  Future<List<SyncOperation>> getForEntity(String entityType, String entityId) async {
+  Future<List<SyncOperation>> getForEntity(
+      String entityType, String entityId) async {
     final rows = await _database.getOperationsForEntity(entityType, entityId);
     return rows.map(_rowToOperation).toList();
   }
@@ -117,7 +119,8 @@ class SyncQueue {
     final operations = await getForEntity(entityType, entityId);
     if (operations.length <= 1) return;
 
-    _log.debug('Consolidating ${operations.length} operations for $entityType:$entityId');
+    _log.debug(
+        'Consolidating ${operations.length} operations for $entityType:$entityId');
 
     // Sort by creation time
     operations.sort((a, b) => a.createdAt.compareTo(b.createdAt));

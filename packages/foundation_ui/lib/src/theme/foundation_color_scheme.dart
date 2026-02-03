@@ -6,5 +6,6 @@ class FoundationColorScheme {
 
   const FoundationColorScheme({required this.seed, required this.brightness});
 
-  ColorScheme toMaterial() => ColorScheme.fromSeed(seedColor: seed, brightness: brightness);
+  ColorScheme toMaterial() =>
+      ColorScheme.fromSeed(seedColor: seed, brightness: brightness);
 }

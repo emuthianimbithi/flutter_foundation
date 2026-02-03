@@ -41,10 +41,12 @@ class _PaymentFormState extends ConsumerState<PaymentForm> {
         children: [
           Text('Pay', style: FoundationTheme.typeOf(context).h3),
           SizedBox(height: tokens.space12),
-          Text('${_money(widget.amountMinor, widget.currency)}', style: FoundationTheme.typeOf(context).bodyStrong),
+          Text('${_money(widget.amountMinor, widget.currency)}',
+              style: FoundationTheme.typeOf(context).bodyStrong),
           if (widget.description != null) ...[
             SizedBox(height: tokens.space8),
-            Text(widget.description!, style: FoundationTheme.typeOf(context).body),
+            Text(widget.description!,
+                style: FoundationTheme.typeOf(context).body),
           ],
           SizedBox(height: tokens.space16),
           _MethodPicker(
@@ -54,7 +56,8 @@ class _PaymentFormState extends ConsumerState<PaymentForm> {
           ),
           SizedBox(height: tokens.space16),
           if (_error != null) ...[
-            Text(_error!, style: TextStyle(color: Theme.of(context).colorScheme.error)),
+            Text(_error!,
+                style: TextStyle(color: Theme.of(context).colorScheme.error)),
             SizedBox(height: tokens.space12),
           ],
           FoundationButton(
@@ -79,16 +82,26 @@ class _PaymentFormState extends ConsumerState<PaymentForm> {
         currency: widget.currency,
         description: widget.description,
       );
-      final res = await svc.pollStatus(intentId: intent.id, interval: const Duration(seconds: 1), timeout: const Duration(seconds: 15));
-      if (res.status == PaymentStatus.succeeded) {
-        widget.onSuccessTransactionId?.call(res.transactionId ?? intent.id);
+      final res = await svc.confirmPayment(intent);
+      final resolved = res.status == PaymentStatus.processing ||
+              res.status == PaymentStatus.pending
+          ? await svc.pollStatus(
+              intentId: intent.id,
+              interval: const Duration(seconds: 1),
+              timeout: const Duration(seconds: 15))
+          : res;
+
+      if (resolved.status == PaymentStatus.succeeded) {
+        widget.onSuccessTransactionId
+            ?.call(resolved.transactionId ?? intent.id);
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Payment successful')));
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Payment successful')));
         }
-      } else if (res.status == PaymentStatus.cancelled) {
-        setState(() => _error = res.message ?? 'Payment cancelled');
+      } else if (resolved.status == PaymentStatus.cancelled) {
+        setState(() => _error = resolved.message ?? 'Payment cancelled');
       } else {
-        setState(() => _error = res.message ?? 'Payment failed');
+        setState(() => _error = resolved.message ?? 'Payment failed');
       }
     } catch (e) {
       setState(() => _error = e.toString());

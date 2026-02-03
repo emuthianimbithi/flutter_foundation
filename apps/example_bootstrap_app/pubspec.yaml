@@ -1,0 +1,29 @@
+name: example_bootstrap_app
+description: Minimal demo using foundation_bootstrap to wire config, storage, auth, routing.
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.6.1
+  foundation_bootstrap:
+    path: ../../packages/foundation_bootstrap
+  foundation_config:
+    path: ../../packages/foundation_config
+  foundation_auth:
+    path: ../../packages/foundation_auth
+  foundation_routing:
+    path: ../../packages/foundation_routing
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true

@@ -7,22 +7,36 @@ import 'package:foundation_auth/src/token_manager.dart';
 import 'package:foundation_config/foundation_config.dart';
 import 'package:foundation_networking/foundation_networking.dart';
 import 'package:foundation_storage/foundation_storage.dart';
+import 'package:foundation_auth/src/auth_options.dart';
 
 /// Expects these to be provided by `foundation_config` and `foundation_storage`.
 final appConfigProvider = Provider<AppConfig>((ref) {
-  throw UnimplementedError('Provide AppConfig via foundation_config');
+  return FoundationConfig.config;
 });
 
 final secureStorageProvider = Provider<SecureStorage>((ref) {
-  throw UnimplementedError('Provide SecureStorage via foundation_storage');
+  return StorageInitializer.secureStorage;
 });
 
 final preferencesStorageProvider = Provider<PreferencesStorage>((ref) {
-  throw UnimplementedError('Provide PreferencesStorage via foundation_storage');
+  return StorageInitializer.preferencesStorage;
 });
 
 final grpcChannelFactoryProvider = Provider<GrpcChannelFactory>((ref) {
-  throw UnimplementedError('Provide GrpcChannelFactory via foundation_networking');
+  final appConfig = ref.watch(appConfigProvider);
+  final config = appConfig.grpcConfig;
+  if (config == null) {
+    throw StateError(
+        'GrpcConfig is missing. Set AppConfig.grpcConfig or override grpcChannelFactoryProvider.');
+  }
+  return GrpcChannelFactoryBuilder()
+      .withConfig(config)
+      .withLogging(
+        logMetadata: false,
+        logRequest: appConfig.enableLogging,
+        logResponse: appConfig.enableLogging,
+      )
+      .build();
 });
 
 final tokenManagerProvider = Provider<TokenManager>((ref) {
@@ -44,14 +58,21 @@ final sessionManagerProvider = Provider<SessionManager>((ref) {
   return SessionManager(
     tokenManager: ref.watch(tokenManagerProvider),
     authService: ref.watch(authServiceProvider),
+    options: ref.watch(authOptionsProvider),
   );
 });
 
-final authControllerProvider = StateNotifierProvider<AuthController, AuthState>((ref) {
+final authControllerProvider =
+    StateNotifierProvider<AuthController, AuthState>((ref) {
   return AuthController(
     authService: ref.watch(authServiceProvider),
     tokenManager: ref.watch(tokenManagerProvider),
+    options: ref.watch(authOptionsProvider),
   );
 });
 
-final authStateProvider = Provider<AuthState>((ref) => ref.watch(authControllerProvider));
+final authStateProvider =
+    Provider<AuthState>((ref) => ref.watch(authControllerProvider));
+
+/// Auth runtime options. Override in your app to customize behaviors.
+final authOptionsProvider = Provider<AuthOptions>((ref) => const AuthOptions());

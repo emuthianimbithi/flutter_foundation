@@ -15,7 +15,8 @@ class NotificationPayload {
   factory NotificationPayload.fromFcmMessage(Map<String, dynamic> message) {
     // `firebase_messaging` provides RemoteMessage, but we keep this type pure.
     final notification = message['notification'] as Map<String, dynamic>?;
-    final data = (message['data'] as Map?)?.cast<String, dynamic>() ?? <String, dynamic>{};
+    final data = (message['data'] as Map?)?.cast<String, dynamic>() ??
+        <String, dynamic>{};
     return NotificationPayload(
       title: notification?['title'] as String?,
       body: notification?['body'] as String?,
@@ -28,7 +29,8 @@ class NotificationPayload {
     return NotificationPayload(
       title: map['title'] as String?,
       body: map['body'] as String?,
-      data: (map['data'] as Map?)?.cast<String, dynamic>() ?? <String, dynamic>{},
+      data:
+          (map['data'] as Map?)?.cast<String, dynamic>() ?? <String, dynamic>{},
     );
   }
 

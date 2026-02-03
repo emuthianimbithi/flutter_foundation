@@ -245,7 +245,8 @@ class Validators {
       if (requireDigit && !value.contains(RegExp(r'[0-9]'))) {
         errors.add('a number');
       }
-      if (requireSpecial && !value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+      if (requireSpecial &&
+          !value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
         errors.add('a special character');
       }
 

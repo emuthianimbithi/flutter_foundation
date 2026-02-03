@@ -51,7 +51,8 @@ class _IntroSliderState extends ConsumerState<IntroSlider> {
                         SizedBox(height: tokens.space24),
                         Text(p.title, style: t.h2, textAlign: TextAlign.center),
                         SizedBox(height: tokens.space12),
-                        Text(p.description, style: t.body, textAlign: TextAlign.center),
+                        Text(p.description,
+                            style: t.body, textAlign: TextAlign.center),
                       ],
                     );
                   },
@@ -64,11 +65,15 @@ class _IntroSliderState extends ConsumerState<IntroSlider> {
                       label: isLast ? 'Done' : 'Next',
                       onPressed: () {
                         if (isLast) {
-                          ref.read(hasCompletedOnboardingProvider.notifier).state = true;
+                          ref
+                              .read(hasCompletedOnboardingProvider.notifier)
+                              .state = true;
                           widget.onDone?.call();
                           return;
                         }
-                        _controller.nextPage(duration: const Duration(milliseconds: 250), curve: Curves.easeOut);
+                        _controller.nextPage(
+                            duration: const Duration(milliseconds: 250),
+                            curve: Curves.easeOut);
                       },
                     ),
                   ),

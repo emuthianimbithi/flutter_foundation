@@ -39,7 +39,8 @@ class FoundationTextField extends StatelessWidget {
         errorText: errorText,
         prefixIcon: prefix,
         suffixIcon: suffix,
-        contentPadding: EdgeInsets.symmetric(horizontal: tokens.space16, vertical: tokens.space12),
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: tokens.space16, vertical: tokens.space12),
       ),
     );
   }

@@ -35,3 +35,4 @@ export 'src/providers.dart';
 
 // Initialization
 export 'src/storage_initializer.dart';
+export 'src/storage_options.dart';

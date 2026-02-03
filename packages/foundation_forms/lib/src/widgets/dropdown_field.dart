@@ -29,9 +29,8 @@ class DropdownField<T> extends ConsumerWidget {
           value: current.value,
           items: items,
           onChanged: (v) {
-            ref
-                .read(foundationFormControllerProvider.notifier)
-                .state = form.setField<T?>(fieldKey, FoundationFormFieldState<T?>(value: v));
+            ref.read(foundationFormControllerProvider.notifier).state = form
+                .setField<T?>(fieldKey, FoundationFormFieldState<T?>(value: v));
           },
         ),
       ),

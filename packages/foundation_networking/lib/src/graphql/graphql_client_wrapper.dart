@@ -192,7 +192,8 @@ class GraphQLClientWrapper {
       );
     }
 
-    _log.debug('Subscribe: ${operationName ?? subscription.substring(0, 50)}...');
+    _log.debug(
+        'Subscribe: ${operationName ?? subscription.substring(0, 50)}...');
 
     final options = SubscriptionOptions(
       document: gql(subscription),

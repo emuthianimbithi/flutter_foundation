@@ -12,7 +12,8 @@ import 'sync_config.dart';
 import 'sync_status.dart';
 
 /// Callback for executing a sync operation on the server.
-typedef SyncExecutor = Future<SyncExecutionResult> Function(SyncOperation operation);
+typedef SyncExecutor = Future<SyncExecutionResult> Function(
+    SyncOperation operation);
 
 /// Result of executing a sync operation.
 class SyncExecutionResult {
@@ -124,7 +125,8 @@ class SyncEngine {
   Stream<SyncStatus> get statusStream => _statusController.stream;
 
   /// Unresolved conflicts that need manual resolution.
-  List<SyncConflict> get unresolvedConflicts => List.unmodifiable(_unresolvedConflicts);
+  List<SyncConflict> get unresolvedConflicts =>
+      List.unmodifiable(_unresolvedConflicts);
 
   /// Whether sync is currently in progress.
   bool get isSyncing => _isSyncing;
@@ -190,7 +192,8 @@ class SyncEngine {
       for (final operation in pending) {
         if (!_connectivityMonitor.isConnected) {
           _log.warning('Lost connectivity during sync');
-          _updateStatus(_status.copyWith(state: SyncState.paused, isOffline: true));
+          _updateStatus(
+              _status.copyWith(state: SyncState.paused, isOffline: true));
           break;
         }
 
@@ -224,7 +227,8 @@ class SyncEngine {
         currentEntityType: null,
       ));
 
-      _log.info('Sync completed: $synced synced, $failed failed, $remainingCount remaining');
+      _log.info(
+          'Sync completed: $synced synced, $failed failed, $remainingCount remaining');
     } catch (e, s) {
       _log.error('Sync error', e, s);
       _updateStatus(_status.copyWith(
@@ -247,12 +251,14 @@ class SyncEngine {
     }
 
     try {
-      final result = await executor(operation).timeout(_config.operationTimeout);
+      final result =
+          await executor(operation).timeout(_config.operationTimeout);
 
       if (result.success) {
         await _queue.remove(operation.id!);
         _changeTracker.clearChanges(operation.entityType, operation.entityId);
-        _log.debug('Operation succeeded: ${operation.entityType}:${operation.entityId}');
+        _log.debug(
+            'Operation succeeded: ${operation.entityType}:${operation.entityId}');
         return true;
       }
 
@@ -263,7 +269,8 @@ class SyncEngine {
 
       // Handle failure with retry
       if (operation.hasExceededRetries(_config.maxRetries)) {
-        _log.warning('Operation exceeded max retries: ${operation.entityType}:${operation.entityId}');
+        _log.warning(
+            'Operation exceeded max retries: ${operation.entityType}:${operation.entityId}');
         return false;
       }
 
@@ -273,22 +280,31 @@ class SyncEngine {
         result.errorMessage,
       );
 
-      _log.debug('Operation failed, will retry: ${operation.entityType}:${operation.entityId}');
+      _log.debug(
+          'Operation failed, will retry: ${operation.entityType}:${operation.entityId}');
       return false;
     } on TimeoutException {
-      _log.warning('Operation timed out: ${operation.entityType}:${operation.entityId}');
-      await _queue.updateRetry(operation.id!, operation.retryCount + 1, 'Timeout');
+      _log.warning(
+          'Operation timed out: ${operation.entityType}:${operation.entityId}');
+      await _queue.updateRetry(
+          operation.id!, operation.retryCount + 1, 'Timeout');
       return false;
     } catch (e, s) {
-      _log.error('Operation error: ${operation.entityType}:${operation.entityId}', e, s);
-      await _queue.updateRetry(operation.id!, operation.retryCount + 1, e.toString());
+      _log.error(
+          'Operation error: ${operation.entityType}:${operation.entityId}',
+          e,
+          s);
+      await _queue.updateRetry(
+          operation.id!, operation.retryCount + 1, e.toString());
       return false;
     }
   }
 
   /// Handles a conflict.
-  Future<void> _handleConflict(SyncOperation operation, SyncExecutionResult result) async {
-    _log.warning('Conflict detected: ${operation.entityType}:${operation.entityId}');
+  Future<void> _handleConflict(
+      SyncOperation operation, SyncExecutionResult result) async {
+    _log.warning(
+        'Conflict detected: ${operation.entityType}:${operation.entityId}');
 
     final conflict = SyncConflict(
       entityType: operation.entityType,
@@ -320,8 +336,10 @@ class SyncEngine {
   }
 
   /// Resolves a conflict manually.
-  Future<void> resolveConflict(SyncConflict conflict, Map<String, dynamic> resolvedData) async {
-    _log.info('Manually resolving conflict: ${conflict.entityType}:${conflict.entityId}');
+  Future<void> resolveConflict(
+      SyncConflict conflict, Map<String, dynamic> resolvedData) async {
+    _log.info(
+        'Manually resolving conflict: ${conflict.entityType}:${conflict.entityId}');
 
     _unresolvedConflicts.remove(conflict);
 

@@ -8,7 +8,7 @@ import 'navigation_service.dart';
 
 /// Provide a [DeepLinkHandler] so apps can override it.
 final deepLinkHandlerProvider = Provider<DeepLinkHandler>((ref) {
-  return const DeepLinkHandler();
+  return DeepLinkHandler();
 });
 
 /// Provide the [GoRouter] instance.

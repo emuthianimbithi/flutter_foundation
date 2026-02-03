@@ -39,7 +39,8 @@ class ShowcaseApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Foundation Showcase',
       theme: FoundationTheme.materialTheme(
-        scheme: const FoundationColorScheme(seed: Colors.teal, brightness: Brightness.light),
+        scheme: const FoundationColorScheme(
+            seed: Colors.teal, brightness: Brightness.light),
       ),
       home: const _HomeScreen(),
     );
@@ -70,7 +71,8 @@ class _HomeScreen extends StatelessWidget {
     ),
     _Destination(
       title: 'Media',
-      description: 'Image picker & cached network images from foundation_media.',
+      description:
+          'Image picker & cached network images from foundation_media.',
       icon: Icons.photo_library_outlined,
       builder: (_) => const _MediaScreen(),
     ),
@@ -119,7 +121,8 @@ class _HomeScreen extends StatelessWidget {
               title: Text(d.title, style: type.h3),
               subtitle: Text(d.description, style: type.body),
               trailing: const Icon(Icons.chevron_right),
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: d.builder)),
+              onTap: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: d.builder)),
             ),
           );
         },
@@ -185,7 +188,8 @@ class _UiGalleryScreen extends StatelessWidget {
                   children: [
                     Text('FoundationCard', style: type.h3),
                     SizedBox(height: tokens.space8),
-                    Text('Reusable card with theme spacing and radius.', style: type.body),
+                    Text('Reusable card with theme spacing and radius.',
+                        style: type.body),
                   ],
                 ),
               ),
@@ -278,7 +282,8 @@ class _AnalyticsScreenState extends ConsumerState<_AnalyticsScreen> {
 
   Future<void> _track() async {
     final svc = ref.read(analyticsServiceProvider);
-    await svc.track('demo_event', params: {'ts': DateTime.now().toIso8601String()});
+    await svc
+        .track('demo_event', params: {'ts': DateTime.now().toIso8601String()});
     setState(() {
       _eventCount += 1;
       _lastLog = 'Sent demo_event ($_eventCount)';
@@ -566,11 +571,16 @@ class _CalendarScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Selected: ${selected.toLocal().toIso8601String().split("T").first}', style: t.bodyStrong),
+                Text(
+                    'Selected: ${selected.toLocal().toIso8601String().split("T").first}',
+                    style: t.bodyStrong),
                 SizedBox(height: tokens.space8),
                 Text('Events today', style: t.h3),
                 ...events
-                    .where((e) => e.start.year == selected.year && e.start.month == selected.month && e.start.day == selected.day)
+                    .where((e) =>
+                        e.start.year == selected.year &&
+                        e.start.month == selected.month &&
+                        e.start.day == selected.day)
                     .map((e) => Text('• ${e.title}', style: t.body))
                     .toList(),
               ],
@@ -688,7 +698,8 @@ class _PaymentsScreenState extends ConsumerState<_PaymentsScreen> {
               amountMinor: 2599,
               currency: 'usd',
               description: 'Pro subscription',
-              onSuccessTransactionId: (tx) => setState(() => _status = 'Paid: $tx'),
+              onSuccessTransactionId: (tx) =>
+                  setState(() => _status = 'Paid: $tx'),
             ),
             SizedBox(height: tokens.space16),
             Text('Status: $_status', style: t.bodyStrong),
@@ -724,6 +735,7 @@ class _DemoPaymentService implements PaymentService {
     Duration timeout = const Duration(seconds: 5),
   }) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    return PaymentResult(status: PaymentStatus.succeeded, transactionId: 'txn_$intentId');
+    return PaymentResult(
+        status: PaymentStatus.succeeded, transactionId: 'txn_$intentId');
   }
 }

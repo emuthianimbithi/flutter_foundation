@@ -7,7 +7,8 @@ class RootDetectionService {
   Future<bool> isDeviceCompromised() async {
     if (Platform.isAndroid) {
       // Heuristic placeholder
-      return File('/system/xbin/su').existsSync() || File('/system/bin/su').existsSync();
+      return File('/system/xbin/su').existsSync() ||
+          File('/system/bin/su').existsSync();
     }
     if (Platform.isIOS) {
       // Heuristic placeholder

@@ -10,6 +10,9 @@ abstract class PaymentService {
     String? description,
   });
 
+  /// Confirm/present the payment to the user (e.g., Stripe PaymentSheet).
+  Future<PaymentResult> confirmPayment(PaymentIntentModel intent);
+
   /// Poll payment status until terminal state.
   Future<PaymentResult> pollStatus({
     required String intentId,

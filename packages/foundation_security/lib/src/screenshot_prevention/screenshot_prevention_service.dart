@@ -6,7 +6,8 @@ import 'package:flutter/services.dart';
 /// For iOS: UIView secure text field overlay tricks.
 /// Implement via platform channels in your app if needed.
 class ScreenshotPreventionService {
-  static const MethodChannel _channel = MethodChannel('foundation_security/screenshot');
+  static const MethodChannel _channel =
+      MethodChannel('foundation_security/screenshot');
 
   Future<void> enable() async {
     try {

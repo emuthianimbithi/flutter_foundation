@@ -70,7 +70,8 @@ class ScopedStorage {
   ///
   /// This should be called after successful authentication.
   Future<void> setScope(StorageScope scope) async {
-    _log.info('Setting storage scope: user=${scope.userId}, org=${scope.organizationId}');
+    _log.info(
+        'Setting storage scope: user=${scope.userId}, org=${scope.organizationId}');
 
     final previousScope = _currentScope;
     _currentScope = scope;
@@ -221,7 +222,8 @@ class ScopedStorage {
 
   /// Generates a user+organization scoped key.
   String fullyScopedKey(String key) {
-    if (_currentScope?.userId == null || _currentScope?.organizationId == null) {
+    if (_currentScope?.userId == null ||
+        _currentScope?.organizationId == null) {
       throw StateError('Full scope not set');
     }
     return 'user:${_currentScope!.userId}:org:${_currentScope!.organizationId}:$key';

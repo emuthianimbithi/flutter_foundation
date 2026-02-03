@@ -7,7 +7,8 @@ class MapPlaceholder extends StatelessWidget {
   final MapLocation center;
   final List<MapMarker> markers;
 
-  const MapPlaceholder({super.key, required this.center, this.markers = const []});
+  const MapPlaceholder(
+      {super.key, required this.center, this.markers = const []});
 
   @override
   Widget build(BuildContext context) {

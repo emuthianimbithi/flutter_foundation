@@ -88,7 +88,8 @@ class Throttler {
   void _scheduleTrailing() {
     if (_timer != null) return;
 
-    final remaining = duration - DateTime.now().difference(_lastCall ?? DateTime.now());
+    final remaining =
+        duration - DateTime.now().difference(_lastCall ?? DateTime.now());
     _timer = Timer(remaining.isNegative ? Duration.zero : remaining, () {
       if (_pendingAction != null) {
         _pendingAction!();
@@ -190,7 +191,8 @@ class CallableThrottler<T> {
   void _scheduleTrailing() {
     if (_timer != null) return;
 
-    final remaining = duration - DateTime.now().difference(_lastCall ?? DateTime.now());
+    final remaining =
+        duration - DateTime.now().difference(_lastCall ?? DateTime.now());
     _timer = Timer(remaining.isNegative ? Duration.zero : remaining, () {
       if (_pendingValue != null) {
         action(_pendingValue as T);

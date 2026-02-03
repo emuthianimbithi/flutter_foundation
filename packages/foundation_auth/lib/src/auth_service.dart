@@ -44,13 +44,20 @@ class AuthService {
   final mfa_pb.MFAServiceClient _mfaClient;
   final TokenManager _tokenManager;
   final AppConfig _appConfig;
+  Future<AuthState>? _refreshInFlight;
+  final DateTime Function() _now;
+  final Future<AuthState> Function()? _refreshOverride;
 
   AuthService({
     required GrpcChannelFactory channelFactory,
     required TokenManager tokenManager,
     required AppConfig appConfig,
+    DateTime Function()? now,
+    Future<AuthState> Function()? refreshOverride,
   })  : _tokenManager = tokenManager,
         _appConfig = appConfig,
+        _now = now ?? DateTime.now,
+        _refreshOverride = refreshOverride,
         _authClient = pb.AuthServiceClient(
           channelFactory.getChannel(),
           options: channelFactory.defaultCallOptions,
@@ -181,33 +188,13 @@ class AuthService {
 
   /// Refresh tokens using RefreshToken RPC.
   Future<AuthState> refresh() async {
-    final refreshToken = await _tokenManager.getRefreshToken();
-    if (refreshToken == null || refreshToken.isEmpty) {
-      return const AuthState.unauthenticated(message: 'No refresh token');
+    if (_refreshInFlight != null) return _refreshInFlight!;
+    _refreshInFlight = _refreshInternal();
+    try {
+      return await _refreshInFlight!;
+    } finally {
+      _refreshInFlight = null;
     }
-
-    final req = pb.RefreshTokenRequest()..refreshToken = refreshToken;
-    final resp = await _authClient.refreshToken(req);
-
-    await _tokenManager.saveTokens(
-      accessToken: resp.accessToken,
-      refreshToken: resp.refreshToken,
-      accessExpiry: resp.accessTokenExpiresAt.toDateTime(),
-      refreshExpiry: resp.refreshTokenExpiresAt.toDateTime(),
-    );
-
-    final userId = await _tokenManager.getUserId() ?? '';
-    final orgSlug = await _tokenManager.getOrgSlug();
-    final role = await _tokenManager.getRole() ?? '';
-
-    return AuthState.authenticated(
-      userId: userId,
-      orgSlug: orgSlug,
-      features: const [],
-      role: role,
-      accessToken: resp.accessToken,
-      refreshToken: resp.refreshToken,
-    );
   }
 
   /// Verify MFA to complete login.
@@ -246,6 +233,36 @@ class AuthService {
       orgSlug: resp.organization.slug,
       features: resp.features,
       role: resp.role,
+      accessToken: resp.accessToken,
+      refreshToken: resp.refreshToken,
+    );
+  }
+
+  Future<AuthState> _refreshInternal() async {
+    if (_refreshOverride != null) {
+      return _refreshOverride!();
+    }
+    final refreshToken = await _tokenManager.getRefreshToken();
+    if (refreshToken == null || refreshToken.isEmpty) {
+      return const AuthState.unauthenticated(message: 'No refresh token');
+    }
+
+    final req = pb.RefreshTokenRequest()..refreshToken = refreshToken;
+    final resp = await _authClient.refreshToken(req);
+
+    await _tokenManager.saveTokens(
+      accessToken: resp.accessToken,
+      refreshToken: resp.refreshToken,
+      accessExpiry: resp.accessTokenExpiresAt.toDateTime(),
+      refreshExpiry: resp.refreshTokenExpiresAt.toDateTime(),
+    );
+
+    final snapshot = await _tokenManager.loadSnapshot();
+    return AuthState.authenticated(
+      userId: snapshot.userId ?? '',
+      orgSlug: snapshot.orgSlug,
+      features: const [],
+      role: snapshot.role ?? '',
       accessToken: resp.accessToken,
       refreshToken: resp.refreshToken,
     );
@@ -294,7 +311,8 @@ class AuthService {
   }
 
   /// Disable TOTP (and clear recovery codes) after password + current TOTP code.
-  Future<void> disableTotp({required String password, required String code}) async {
+  Future<void> disableTotp(
+      {required String password, required String code}) async {
     await _mfaClient.disableTOTP(
       mfa_pb.DisableTOTPRequest()
         ..password = password
@@ -316,7 +334,8 @@ class AuthService {
     return MfaStatusData(
       totpEnabled: resp.totpEnabled,
       recoveryCodesRemaining: resp.recoveryCodesRemaining,
-      totpEnabledAt: resp.hasTotpEnabledAt() ? resp.totpEnabledAt.toDateTime() : null,
+      totpEnabledAt:
+          resp.hasTotpEnabledAt() ? resp.totpEnabledAt.toDateTime() : null,
       recoveryCodesGeneratedAt: resp.hasRecoveryCodesGeneratedAt()
           ? resp.recoveryCodesGeneratedAt.toDateTime()
           : null,

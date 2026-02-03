@@ -17,6 +17,8 @@ dependencies:
     path: ../foundation_core
   foundation_auth:
     path: ../foundation_auth
+  foundation_ui:
+    path: ../foundation_ui
 
 dev_dependencies:
   flutter_test:

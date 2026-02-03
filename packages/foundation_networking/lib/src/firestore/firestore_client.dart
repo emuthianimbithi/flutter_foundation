@@ -296,12 +296,15 @@ class FirestoreClient {
 
   Failure _mapFirestoreError(FirebaseException e) {
     return switch (e.code) {
-      'permission-denied' => Failure.authorization(e.message ?? 'Permission denied'),
+      'permission-denied' =>
+        Failure.authorization(e.message ?? 'Permission denied'),
       'not-found' => Failure.notFound(e.message ?? 'Document not found'),
-      'already-exists' => Failure.conflict(e.message ?? 'Document already exists'),
+      'already-exists' =>
+        Failure.conflict(e.message ?? 'Document already exists'),
       'unavailable' => Failure.network(e.message ?? 'Service unavailable'),
       'cancelled' => Failure.cancelled(e.message ?? 'Operation cancelled'),
-      'deadline-exceeded' => Failure.timeout(e.message ?? 'Operation timed out'),
+      'deadline-exceeded' =>
+        Failure.timeout(e.message ?? 'Operation timed out'),
       _ => Failure.unexpected(e.message ?? 'Firestore error', code: e.code),
     };
   }

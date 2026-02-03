@@ -64,8 +64,7 @@ class FeatureFlags extends Equatable {
   List<T>? getList<T>(String key) => get<List<dynamic>>(key)?.cast<T>();
 
   /// Gets a map flag value.
-  Map<String, dynamic>? getMap(String key) =>
-      get<Map<String, dynamic>>(key);
+  Map<String, dynamic>? getMap(String key) => get<Map<String, dynamic>>(key);
 
   /// Whether a flag exists.
   bool hasFlag(String key) =>

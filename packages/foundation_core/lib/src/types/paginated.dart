@@ -155,12 +155,10 @@ class PaginationParams extends Equatable {
   PaginationParams nextPage() => copyWith(page: page + 1);
 
   /// Creates params for the previous page.
-  PaginationParams previousPage() =>
-      copyWith(page: page > 1 ? page - 1 : 1);
+  PaginationParams previousPage() => copyWith(page: page > 1 ? page - 1 : 1);
 
   /// Creates params with a cursor.
-  PaginationParams withCursor(String cursor) =>
-      copyWith(cursor: cursor);
+  PaginationParams withCursor(String cursor) => copyWith(cursor: cursor);
 
   /// The offset for offset-based pagination.
   int get offset => (page - 1) * pageSize;

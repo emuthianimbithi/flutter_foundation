@@ -54,10 +54,13 @@ class _IntroSliderState extends ConsumerState<IntroSlider> {
                     onPressed: () => setState(() => index--),
                   ),
                 FoundationButton(
-                  label: index == widget.slides.length - 1 ? 'Get Started' : 'Next',
+                  label: index == widget.slides.length - 1
+                      ? 'Get Started'
+                      : 'Next',
                   onPressed: () {
                     if (index == widget.slides.length - 1) {
-                      ref.read(onboardingCompletedProvider.notifier).state = true;
+                      ref.read(onboardingCompletedProvider.notifier).state =
+                          true;
                       widget.onDone?.call();
                     } else {
                       setState(() => index++);

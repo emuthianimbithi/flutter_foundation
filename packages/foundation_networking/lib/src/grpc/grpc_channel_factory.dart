@@ -75,7 +75,8 @@ class GrpcChannelFactory {
           : const ChannelCredentials.insecure(),
       connectionTimeout: _config.connectionTimeout,
       idleTimeout: _config.idleTimeout,
-      codecRegistry: CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
+      codecRegistry:
+          CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
     );
 
     _channel = ClientChannel(
@@ -141,7 +142,8 @@ class GrpcChannelFactoryBuilder {
   }
 
   /// Sets the host and port.
-  GrpcChannelFactoryBuilder withHost(String host, {int port = 443, bool useTls = true}) {
+  GrpcChannelFactoryBuilder withHost(String host,
+      {int port = 443, bool useTls = true}) {
     _config = GrpcConfig(host: host, port: port, useTls: useTls);
     return this;
   }
@@ -176,7 +178,8 @@ class GrpcChannelFactoryBuilder {
   }
 
   /// Adds custom metadata.
-  GrpcChannelFactoryBuilder withMetadata(Map<String, String> Function() provider) {
+  GrpcChannelFactoryBuilder withMetadata(
+      Map<String, String> Function() provider) {
     _metadataProvider = provider;
     return this;
   }

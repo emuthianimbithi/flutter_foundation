@@ -42,7 +42,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               Text(state.message!, style: const TextStyle(color: Colors.red)),
               const SizedBox(height: 8),
             ],
-            TextField(controller: _email, decoration: const InputDecoration(labelText: 'Email')),
+            TextField(
+                controller: _email,
+                decoration: const InputDecoration(labelText: 'Email')),
             const SizedBox(height: 12),
             TextField(
               controller: _password,

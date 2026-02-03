@@ -8,7 +8,8 @@ final rootDetectionServiceProvider = Provider<RootDetectionService>((ref) {
   return RootDetectionService();
 });
 
-final screenshotPreventionServiceProvider = Provider<ScreenshotPreventionService>((ref) {
+final screenshotPreventionServiceProvider =
+    Provider<ScreenshotPreventionService>((ref) {
   return ScreenshotPreventionService();
 });
 

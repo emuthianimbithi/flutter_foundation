@@ -30,7 +30,8 @@ class GoogleMapView extends StatelessWidget {
 
     return g.GoogleMap(
       initialCameraPosition: g.CameraPosition(
-        target: g.LatLng(initialCamera.target.latitude, initialCamera.target.longitude),
+        target: g.LatLng(
+            initialCamera.target.latitude, initialCamera.target.longitude),
         zoom: initialCamera.zoom,
       ),
       markers: gMarkers,

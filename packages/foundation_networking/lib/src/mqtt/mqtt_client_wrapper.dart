@@ -256,12 +256,14 @@ class MqttClientWrapper {
   }
 
   /// Publishes a string message.
-  void publishString(String topic, String message, {MqttQos qos = MqttQos.atMostOnce}) {
+  void publishString(String topic, String message,
+      {MqttQos qos = MqttQos.atMostOnce}) {
     publish(MqttMessage.string(topic, message, qos: qos));
   }
 
   /// Publishes a JSON message.
-  void publishJson(String topic, Map<String, dynamic> json, {MqttQos qos = MqttQos.atMostOnce}) {
+  void publishJson(String topic, Map<String, dynamic> json,
+      {MqttQos qos = MqttQos.atMostOnce}) {
     publish(MqttMessage.json(topic, json, qos: qos));
   }
 
@@ -276,7 +278,8 @@ class MqttClientWrapper {
       final mqttMessage = MqttMessage(
         topic: topic,
         payload: Uint8List.fromList(data),
-        qos: _reverseMapQos(payload.header?.qos ?? MqttQos.atMostOnce as MqttQos),
+        qos: _reverseMapQos(
+            payload.header?.qos ?? MqttQos.atMostOnce as MqttQos),
         retain: payload.header?.retain ?? false,
         timestamp: DateTime.now(),
       );

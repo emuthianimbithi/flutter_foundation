@@ -22,7 +22,8 @@ class Validators {
     return r.hasMatch(v.trim()) ? null : message;
   }
 
-  static String? combine(String? v, List<String? Function(String?)> validators) {
+  static String? combine(
+      String? v, List<String? Function(String?)> validators) {
     for (final fn in validators) {
       final err = fn(v);
       if (err != null) return err;

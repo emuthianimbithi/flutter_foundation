@@ -25,10 +25,26 @@ class FoundationButton extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
 
     final (bg, fg, border) = switch (variant) {
-      FoundationButtonVariant.primary => (cs.primary, cs.onPrimary, Colors.transparent),
-      FoundationButtonVariant.secondary => (cs.secondaryContainer, cs.onSecondaryContainer, Colors.transparent),
-      FoundationButtonVariant.subtle => (cs.surface, cs.onSurface, cs.outlineVariant),
-      FoundationButtonVariant.destructive => (cs.error, cs.onError, Colors.transparent),
+      FoundationButtonVariant.primary => (
+          cs.primary,
+          cs.onPrimary,
+          Colors.transparent
+        ),
+      FoundationButtonVariant.secondary => (
+          cs.secondaryContainer,
+          cs.onSecondaryContainer,
+          Colors.transparent
+        ),
+      FoundationButtonVariant.subtle => (
+          cs.surface,
+          cs.onSurface,
+          cs.outlineVariant
+        ),
+      FoundationButtonVariant.destructive => (
+          cs.error,
+          cs.onError,
+          Colors.transparent
+        ),
     };
 
     final child = isLoading
@@ -40,7 +56,10 @@ class FoundationButton extends StatelessWidget {
         : Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (icon != null) ...[Icon(icon, size: 18, color: fg), SizedBox(width: tokens.space8)],
+              if (icon != null) ...[
+                Icon(icon, size: 18, color: fg),
+                SizedBox(width: tokens.space8)
+              ],
               Text(label),
             ],
           );
@@ -53,7 +72,8 @@ class FoundationButton extends StatelessWidget {
           backgroundColor: bg,
           foregroundColor: fg,
           side: BorderSide(color: border),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(tokens.radiusMd)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(tokens.radiusMd)),
           padding: EdgeInsets.symmetric(horizontal: tokens.space16),
         ),
         child: child,

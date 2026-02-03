@@ -6,7 +6,8 @@ import '../models/notification_payload.dart';
 ///
 /// To wire taps back into your app, pass [onSelectPayload] when initializing.
 class LocalNotificationsService {
-  final FlutterLocalNotificationsPlugin _plugin = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin _plugin =
+      FlutterLocalNotificationsPlugin();
 
   bool _initialized = false;
 

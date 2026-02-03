@@ -31,7 +31,8 @@ class RefreshInterceptor extends Interceptor {
         _onAuthFailure = onAuthFailure;
 
   @override
-  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
+  Future<void> onError(
+      DioException err, ErrorInterceptorHandler handler) async {
     // Only handle 401 errors
     if (err.response?.statusCode != 401) {
       return handler.next(err);

@@ -85,7 +85,8 @@ class SyncStatus extends Equatable {
   bool get hasFailed => state == SyncState.failed || failedCount > 0;
 
   /// Whether everything is synced.
-  bool get isFullySynced => pendingCount == 0 && conflictCount == 0 && failedCount == 0;
+  bool get isFullySynced =>
+      pendingCount == 0 && conflictCount == 0 && failedCount == 0;
 
   /// Progress as a percentage string.
   String get progressPercent => '${(progress * 100).toInt()}%';

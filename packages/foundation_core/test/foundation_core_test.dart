@@ -230,7 +230,8 @@ void main() {
       final validator = Validators.email();
       expect(validator('test@example.com'), isNull);
       expect(validator('invalid'), isNotNull);
-      expect(validator(''), isNull); // Empty is valid (use compose with required)
+      expect(
+          validator(''), isNull); // Empty is valid (use compose with required)
     });
 
     test('minLength validates length', () {

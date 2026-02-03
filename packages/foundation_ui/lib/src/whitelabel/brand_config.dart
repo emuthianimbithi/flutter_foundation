@@ -18,7 +18,8 @@ class BrandConfig extends Equatable {
     this.logoAsset,
   });
 
-  FoundationColorScheme get scheme => FoundationColorScheme(seed: seedColor, brightness: brightness);
+  FoundationColorScheme get scheme =>
+      FoundationColorScheme(seed: seedColor, brightness: brightness);
 
   @override
   List<Object?> get props => [name, seedColor, brightness, tokens, logoAsset];

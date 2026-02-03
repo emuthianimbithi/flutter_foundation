@@ -29,17 +29,20 @@ class FoundationTheme {
       ),
       cardTheme: CardThemeData(
         elevation: tokens.elevationSm,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(tokens.radiusMd)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(tokens.radiusMd)),
         margin: EdgeInsets.zero,
       ),
       inputDecorationTheme: InputDecorationTheme(
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(tokens.radiusMd)),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(tokens.radiusMd)),
       ),
     );
   }
 
   static FoundationTokens tokensOf(BuildContext context) =>
-      Theme.of(context).extension<FoundationTokens>() ?? const FoundationTokens();
+      Theme.of(context).extension<FoundationTokens>() ??
+      const FoundationTokens();
 
   static FoundationTypography typeOf(BuildContext context) =>
       Theme.of(context).extension<FoundationTypography>() ??

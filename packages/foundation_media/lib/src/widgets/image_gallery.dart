@@ -6,7 +6,8 @@ class ImageGallery extends StatefulWidget {
   final List<String> imageUrls;
   final int initialIndex;
 
-  const ImageGallery({super.key, required this.imageUrls, this.initialIndex = 0});
+  const ImageGallery(
+      {super.key, required this.imageUrls, this.initialIndex = 0});
 
   @override
   State<ImageGallery> createState() => _ImageGalleryState();
@@ -33,7 +34,8 @@ class _ImageGalleryState extends State<ImageGallery> {
   Widget build(BuildContext context) {
     final tokens = FoundationTheme.tokensOf(context);
     return Scaffold(
-      appBar: AppBar(title: Text('Gallery ${_index + 1}/${widget.imageUrls.length}')),
+      appBar: AppBar(
+          title: Text('Gallery ${_index + 1}/${widget.imageUrls.length}')),
       body: PageView.builder(
         controller: _controller,
         itemCount: widget.imageUrls.length,
@@ -45,7 +47,8 @@ class _ImageGalleryState extends State<ImageGallery> {
               child: InteractiveViewer(
                 minScale: 1,
                 maxScale: 4,
-                child: NetworkImageView(url: widget.imageUrls[i], fit: BoxFit.contain),
+                child: NetworkImageView(
+                    url: widget.imageUrls[i], fit: BoxFit.contain),
               ),
             ),
           );

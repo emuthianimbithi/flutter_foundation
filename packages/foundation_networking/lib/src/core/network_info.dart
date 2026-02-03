@@ -37,7 +37,8 @@ class NetworkInfo {
   /// Initializes the network info and starts listening.
   Future<void> init() async {
     await _checkConnectivity();
-    _subscription = _connectivity.onConnectivityChanged.listen(_onConnectivityChanged);
+    _subscription =
+        _connectivity.onConnectivityChanged.listen(_onConnectivityChanged);
     _log.debug('NetworkInfo initialized: $_status');
   }
 
@@ -124,7 +125,8 @@ class NetworkStatus {
           isBluetooth == other.isBluetooth;
 
   @override
-  int get hashCode => Object.hash(isWifi, isMobile, isEthernet, isVpn, isBluetooth);
+  int get hashCode =>
+      Object.hash(isWifi, isMobile, isEthernet, isVpn, isBluetooth);
 
   @override
   String toString() =>

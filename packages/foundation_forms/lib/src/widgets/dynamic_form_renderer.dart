@@ -25,7 +25,8 @@ class DynamicFormRenderer extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<DynamicFormRenderer> createState() => _DynamicFormRendererState();
+  ConsumerState<DynamicFormRenderer> createState() =>
+      _DynamicFormRendererState();
 }
 
 class _DynamicFormRendererState extends ConsumerState<DynamicFormRenderer> {
@@ -54,10 +55,12 @@ class _DynamicFormRendererState extends ConsumerState<DynamicFormRenderer> {
       return 'Required';
     }
     if (v != null) {
-      if (v.minLength != null && (value?.toString().length ?? 0) < v.minLength!) {
+      if (v.minLength != null &&
+          (value?.toString().length ?? 0) < v.minLength!) {
         return v.errorMessage ?? 'Minimum ${v.minLength} characters';
       }
-      if (v.maxLength != null && (value?.toString().length ?? 0) > v.maxLength!) {
+      if (v.maxLength != null &&
+          (value?.toString().length ?? 0) > v.maxLength!) {
         return v.errorMessage ?? 'Maximum ${v.maxLength} characters';
       }
       if (value is num) {
@@ -70,7 +73,9 @@ class _DynamicFormRendererState extends ConsumerState<DynamicFormRenderer> {
       }
       if (v.pattern != null && v.pattern!.isNotEmpty) {
         final reg = RegExp(v.pattern!);
-        if (value != null && value.toString().isNotEmpty && !reg.hasMatch(value.toString())) {
+        if (value != null &&
+            value.toString().isNotEmpty &&
+            !reg.hasMatch(value.toString())) {
           return v.errorMessage ?? 'Invalid format';
         }
       }
@@ -111,7 +116,8 @@ class _DynamicFormRendererState extends ConsumerState<DynamicFormRenderer> {
       initialTime: TimeOfDay.now(),
     );
     if (time != null) {
-      _updateValue(id, '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}');
+      _updateValue(id,
+          '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}');
     }
   }
 
@@ -127,11 +133,15 @@ class _DynamicFormRendererState extends ConsumerState<DynamicFormRenderer> {
 
   Future<void> _captureLocation(String id) async {
     // In absence of a real location service, emit a deterministic demo location.
-    _updateValue(id, const DynamicLocation(latitude: -1.286389, longitude: 36.817223).toJson());
+    _updateValue(
+        id,
+        const DynamicLocation(latitude: -1.286389, longitude: 36.817223)
+            .toJson());
   }
 
   Future<void> _scanBarcode(String id) async {
-    _updateValue(id, 'BAR-${Random().nextInt(999999).toString().padLeft(6, '0')}');
+    _updateValue(
+        id, 'BAR-${Random().nextInt(999999).toString().padLeft(6, '0')}');
   }
 
   Widget _buildField(DynamicFormField field) {
@@ -139,8 +149,11 @@ class _DynamicFormRendererState extends ConsumerState<DynamicFormRenderer> {
     final types = FoundationTheme.typeOf(context);
     final value = _values[field.id];
 
-    Widget buildHelper([String? text]) =>
-        text == null ? const SizedBox.shrink() : Padding(padding: EdgeInsets.only(top: tokens.space4), child: Text(text, style: types.caption));
+    Widget buildHelper([String? text]) => text == null
+        ? const SizedBox.shrink()
+        : Padding(
+            padding: EdgeInsets.only(top: tokens.space4),
+            child: Text(text, style: types.caption));
 
     switch (field.type) {
       case DynamicFieldType.text:
@@ -203,7 +216,8 @@ class _DynamicFormRendererState extends ConsumerState<DynamicFormRenderer> {
               decoration: InputDecoration(labelText: field.label),
               value: value as String?,
               items: field.options
-                  .map((o) => DropdownMenuItem<String>(value: o.value, child: Text(o.label)))
+                  .map((o) => DropdownMenuItem<String>(
+                      value: o.value, child: Text(o.label)))
                   .toList(),
               onChanged: (v) => _updateValue(field.id, v),
               validator: (v) => _validate(field, v),
@@ -370,7 +384,8 @@ class _DynamicFormRendererState extends ConsumerState<DynamicFormRenderer> {
   @override
   Widget build(BuildContext context) {
     final tokens = FoundationTheme.tokensOf(context);
-    final ordered = [...widget.fields]..sort((a, b) => (a.order ?? 0).compareTo(b.order ?? 0));
+    final ordered = [...widget.fields]
+      ..sort((a, b) => (a.order ?? 0).compareTo(b.order ?? 0));
 
     return Form(
       key: _formKey,
@@ -419,7 +434,10 @@ class _PickerRow extends StatelessWidget {
           trailing: const Icon(Icons.calendar_month),
           onTap: onTap,
         ),
-        if (helpText != null) Padding(padding: EdgeInsets.only(left: tokens.space4), child: Text(helpText!, style: types.caption)),
+        if (helpText != null)
+          Padding(
+              padding: EdgeInsets.only(left: tokens.space4),
+              child: Text(helpText!, style: types.caption)),
       ],
     );
   }

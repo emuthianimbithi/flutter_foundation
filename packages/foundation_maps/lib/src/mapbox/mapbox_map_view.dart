@@ -28,7 +28,8 @@ class _MapboxMapViewState extends State<MapboxMapView> {
       key: const ValueKey("mapbox_map"),
       cameraOptions: m.CameraOptions(
         center: m.Point(
-          coordinates: m.Position(widget.initialCamera.target.longitude, widget.initialCamera.target.latitude),
+          coordinates: m.Position(widget.initialCamera.target.longitude,
+              widget.initialCamera.target.latitude),
         ),
         zoom: widget.initialCamera.zoom,
       ),

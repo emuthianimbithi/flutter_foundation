@@ -4,7 +4,8 @@ class FoundationTooltip extends StatelessWidget {
   final String message;
   final Widget child;
 
-  const FoundationTooltip({super.key, required this.message, required this.child});
+  const FoundationTooltip(
+      {super.key, required this.message, required this.child});
 
   @override
   Widget build(BuildContext context) {

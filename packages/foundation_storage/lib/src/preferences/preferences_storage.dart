@@ -38,7 +38,8 @@ class PreferencesStorage {
   /// Ensures the storage is initialized.
   void _ensureInitialized() {
     if (_prefs == null) {
-      throw StateError('PreferencesStorage not initialized. Call init() first.');
+      throw StateError(
+          'PreferencesStorage not initialized. Call init() first.');
     }
   }
 
@@ -169,13 +170,15 @@ class PreferencesStorage {
   String getThemeMode() => getString(PreferenceKeys.themeMode) ?? 'system';
 
   /// Sets the theme mode.
-  Future<bool> setThemeMode(String mode) => setString(PreferenceKeys.themeMode, mode);
+  Future<bool> setThemeMode(String mode) =>
+      setString(PreferenceKeys.themeMode, mode);
 
   /// Whether high contrast is enabled.
   bool isHighContrastEnabled() => getBool(PreferenceKeys.highContrast) ?? false;
 
   /// Sets high contrast mode.
-  Future<bool> setHighContrastEnabled(bool enabled) => setBool(PreferenceKeys.highContrast, enabled);
+  Future<bool> setHighContrastEnabled(bool enabled) =>
+      setBool(PreferenceKeys.highContrast, enabled);
 
   // ─────────────────────────────────────────────────────────────
   // LOCALIZATION
@@ -185,14 +188,16 @@ class PreferencesStorage {
   String? getLocale() => getString(PreferenceKeys.locale);
 
   /// Sets the locale code.
-  Future<bool> setLocale(String locale) => setString(PreferenceKeys.locale, locale);
+  Future<bool> setLocale(String locale) =>
+      setString(PreferenceKeys.locale, locale);
 
   // ─────────────────────────────────────────────────────────────
   // ONBOARDING
   // ─────────────────────────────────────────────────────────────
 
   /// Whether onboarding has been completed.
-  bool isOnboardingComplete() => getBool(PreferenceKeys.onboardingComplete) ?? false;
+  bool isOnboardingComplete() =>
+      getBool(PreferenceKeys.onboardingComplete) ?? false;
 
   /// Sets onboarding completion status.
   Future<bool> setOnboardingComplete(bool complete) =>
@@ -202,21 +207,24 @@ class PreferencesStorage {
   int getLastOnboardingStep() => getInt(PreferenceKeys.lastOnboardingStep) ?? 0;
 
   /// Sets the last onboarding step shown.
-  Future<bool> setLastOnboardingStep(int step) => setInt(PreferenceKeys.lastOnboardingStep, step);
+  Future<bool> setLastOnboardingStep(int step) =>
+      setInt(PreferenceKeys.lastOnboardingStep, step);
 
   // ─────────────────────────────────────────────────────────────
   // NOTIFICATIONS
   // ─────────────────────────────────────────────────────────────
 
   /// Whether notifications are enabled.
-  bool areNotificationsEnabled() => getBool(PreferenceKeys.notificationsEnabled) ?? true;
+  bool areNotificationsEnabled() =>
+      getBool(PreferenceKeys.notificationsEnabled) ?? true;
 
   /// Sets notifications enabled status.
   Future<bool> setNotificationsEnabled(bool enabled) =>
       setBool(PreferenceKeys.notificationsEnabled, enabled);
 
   /// Whether push notifications are enabled.
-  bool arePushNotificationsEnabled() => getBool(PreferenceKeys.pushNotificationsEnabled) ?? true;
+  bool arePushNotificationsEnabled() =>
+      getBool(PreferenceKeys.pushNotificationsEnabled) ?? true;
 
   /// Sets push notifications enabled status.
   Future<bool> setPushNotificationsEnabled(bool enabled) =>
@@ -227,14 +235,16 @@ class PreferencesStorage {
   // ─────────────────────────────────────────────────────────────
 
   /// Whether biometric login is enabled.
-  bool isBiometricLoginEnabled() => getBool(PreferenceKeys.biometricLoginEnabled) ?? false;
+  bool isBiometricLoginEnabled() =>
+      getBool(PreferenceKeys.biometricLoginEnabled) ?? false;
 
   /// Sets biometric login enabled status.
   Future<bool> setBiometricLoginEnabled(bool enabled) =>
       setBool(PreferenceKeys.biometricLoginEnabled, enabled);
 
   /// Whether to remember the user's email.
-  bool isRememberEmailEnabled() => getBool(PreferenceKeys.rememberEmail) ?? false;
+  bool isRememberEmailEnabled() =>
+      getBool(PreferenceKeys.rememberEmail) ?? false;
 
   /// Sets remember email status.
   Future<bool> setRememberEmailEnabled(bool enabled) =>
@@ -250,7 +260,8 @@ class PreferencesStorage {
   }
 
   /// Gets the last organization slug.
-  String? getLastOrganizationSlug() => getString(PreferenceKeys.lastOrganizationSlug);
+  String? getLastOrganizationSlug() =>
+      getString(PreferenceKeys.lastOrganizationSlug);
 
   /// Sets the last organization slug.
   Future<bool> setLastOrganizationSlug(String slug) =>
@@ -278,5 +289,6 @@ class PreferencesStorage {
   int getLaunchCount() => getInt(PreferenceKeys.launchCount) ?? 0;
 
   /// Increments the launch count.
-  Future<bool> incrementLaunchCount() => setInt(PreferenceKeys.launchCount, getLaunchCount() + 1);
+  Future<bool> incrementLaunchCount() =>
+      setInt(PreferenceKeys.launchCount, getLaunchCount() + 1);
 }

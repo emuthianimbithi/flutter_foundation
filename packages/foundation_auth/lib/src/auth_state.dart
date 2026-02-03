@@ -72,8 +72,7 @@ class AuthState {
   const AuthState.unauthenticated({String? message})
       : this._(phase: AuthPhase.unauthenticated, message: message);
 
-  const AuthState.authenticating()
-      : this._(phase: AuthPhase.authenticating);
+  const AuthState.authenticating() : this._(phase: AuthPhase.authenticating);
 
   const AuthState.requiresOrgSelection({
     required String orgSelectionToken,
@@ -117,5 +116,6 @@ class AuthState {
   bool get isAuthenticated => phase == AuthPhase.authenticated;
 
   @override
-  String toString() => 'AuthState(phase: $phase, userId: $userId, orgSlug: $orgSlug)';
+  String toString() =>
+      'AuthState(phase: $phase, userId: $userId, orgSlug: $orgSlug)';
 }

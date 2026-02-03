@@ -47,7 +47,8 @@ class LoggingInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     if (logResponse) {
-      final statusEmoji = response.statusCode != null && response.statusCode! < 400 ? '✓' : '✗';
+      final statusEmoji =
+          response.statusCode != null && response.statusCode! < 400 ? '✓' : '✗';
       _log.debug(
         '← $statusEmoji ${response.statusCode} ${response.requestOptions.method} '
         '${response.requestOptions.uri.path}',
@@ -74,7 +75,8 @@ class LoggingInterceptor extends Interceptor {
       );
 
       if (err.response?.data != null) {
-        _log.error('  Error body: ${_truncate(_formatBody(err.response!.data))}');
+        _log.error(
+            '  Error body: ${_truncate(_formatBody(err.response!.data))}');
       }
     }
 

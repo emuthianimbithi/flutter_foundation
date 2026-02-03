@@ -36,7 +36,8 @@ class ChangeTracker {
   void track(TrackedChange change) {
     final key = _key(change.entityType, change.entityId);
     _changes.putIfAbsent(key, () => []).add(change);
-    _log.debug('Tracked change: ${change.changeType.name} ${change.entityType}:${change.entityId}');
+    _log.debug(
+        'Tracked change: ${change.changeType.name} ${change.entityType}:${change.entityId}');
   }
 
   /// Tracks a field update.
@@ -104,7 +105,9 @@ class ChangeTracker {
 
   /// Gets changes by organization.
   List<TrackedChange> getChangesByOrganization(String organizationId) {
-    return getAllChanges().where((c) => c.organizationId == organizationId).toList();
+    return getAllChanges()
+        .where((c) => c.organizationId == organizationId)
+        .toList();
   }
 
   /// Whether there are changes for an entity.
@@ -117,7 +120,8 @@ class ChangeTracker {
   bool get hasAnyChanges => _changes.values.any((list) => list.isNotEmpty);
 
   /// Gets the total number of changes.
-  int get changeCount => _changes.values.fold(0, (sum, list) => sum + list.length);
+  int get changeCount =>
+      _changes.values.fold(0, (sum, list) => sum + list.length);
 
   /// Clears changes for an entity.
   void clearChanges(String entityType, String entityId) {
@@ -143,14 +147,16 @@ class ChangeTracker {
   /// Consolidates changes for an entity.
   ///
   /// Multiple updates to the same field are consolidated into one.
-  Map<String, dynamic> getConsolidatedChanges(String entityType, String entityId) {
+  Map<String, dynamic> getConsolidatedChanges(
+      String entityType, String entityId) {
     final changes = getChanges(entityType, entityId);
     final consolidated = <String, dynamic>{};
 
     for (final change in changes) {
       if (change.changeType == ChangeType.update && change.field != null) {
         consolidated[change.field!] = change.newValue;
-      } else if (change.changeType == ChangeType.create && change.data != null) {
+      } else if (change.changeType == ChangeType.create &&
+          change.data != null) {
         consolidated.addAll(change.data!);
       }
     }

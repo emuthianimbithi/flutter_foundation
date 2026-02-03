@@ -1,46 +1,47 @@
 # foundation_routing
 
-Routing + deep-link package for the Flutter Foundation monorepo.
+GoRouter wiring with auth-aware redirects, deep-link queueing, and sensible default pages.
 
-- Built on **go_router**
-- Integrates with **Riverpod**
-- Redirect logic driven by `AuthState` from `foundation_auth`
+## Modes
+- **Auth-driven (default):** protects routes using `authStateProvider` phases (unauth → login, org → /org, mfa → /mfa, auth → /home).
+- **Simple:** no auth redirects; use for public apps or shell flows.
 
-## Usage (monorepo)
-
-Add to your app:
-
-```yaml
-dependencies:
-  foundation_routing:
-    path: packages/foundation_routing
-  # optional if you navigate from notifications or auth state
-  foundation_auth:
-    path: packages/foundation_auth
-  foundation_notifications:
-    path: packages/foundation_notifications
-```
-
-Override page builders via `appRouterConfigProvider`:
-
+## Quickstart
 ```dart
-ProviderScope(
-  overrides: [
-    appRouterConfigProvider.overrideWithValue(
-      AppRouterConfig(
-        loginBuilder: (_) => const LoginPage(),
-        homeBuilder: (_) => const HomePage(),
-        // ...
-      ),
-    ),
-  ],
-  child: const MyApp(),
-);
+final router = AppRouter(
+  ref: ref,
+  config: AppRouterConfig(
+    options: const RoutingOptions(mode: RoutingMode.authDriven),
+    homeBuilder: (_) => const HomePage(),
+  ),
+).router;
 ```
 
-Then use:
-
+### Simple mode
 ```dart
-final router = ref.read(goRouterProvider);
-MaterialApp.router(routerConfig: router);
+final router = AppRouter(
+  ref: ref,
+  config: AppRouterConfig(
+    options: const RoutingOptions(mode: RoutingMode.simple),
+    homeBuilder: (_) => const PublicHome(),
+  ),
+).router;
 ```
+
+## Custom pages
+Override any builder:
+```dart
+AppRouterConfig(
+  homeBuilder: (_) => const Home(),
+  loginBuilder: (_) => const MyLogin(),
+  splashBuilder: (_) => const MySplash(),
+  forbiddenBuilder: (_) => const Forbidden(),
+)
+```
+
+## Deep links
+- Incoming deep links are mapped via `DeepLinkHandler.mapIncomingUri`.
+- If auth state isn’t ready, the link is queued and resumed after authentication (auth-driven mode).
+
+## Tests
+See `test/redirect_policy_test.dart` for auth vs simple mode redirects and deep-link queue behavior.

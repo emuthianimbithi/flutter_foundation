@@ -6,7 +6,8 @@ class NavigationService {
 
   NavigationService(this._router);
 
-  String get location => _router.routerDelegate.currentConfiguration.uri.toString();
+  String get location =>
+      _router.routerDelegate.currentConfiguration.uri.toString();
 
   void go(String location) => _router.go(location);
 

@@ -10,7 +10,8 @@ import '../models/notification_payload.dart';
 class FcmService {
   final FirebaseMessaging _messaging;
 
-  FcmService({FirebaseMessaging? messaging}) : _messaging = messaging ?? FirebaseMessaging.instance;
+  FcmService({FirebaseMessaging? messaging})
+      : _messaging = messaging ?? FirebaseMessaging.instance;
 
   StreamSubscription<RemoteMessage>? _onMessageSub;
   StreamSubscription<RemoteMessage>? _onMessageOpenedAppSub;
@@ -54,7 +55,8 @@ class FcmService {
       onForeground(payload);
     });
 
-    _onMessageOpenedAppSub = FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage msg) {
+    _onMessageOpenedAppSub =
+        FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage msg) {
       final payload = NotificationPayload(
         title: msg.notification?.title,
         body: msg.notification?.body,

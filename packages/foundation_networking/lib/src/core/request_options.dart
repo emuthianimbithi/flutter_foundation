@@ -90,6 +90,5 @@ class NetworkRequestOptions {
       copyWith(headers: {...?headers, ...additionalHeaders});
 
   /// Adds a tag.
-  NetworkRequestOptions withTag(String tag) =>
-      copyWith(tags: {...?tags, tag});
+  NetworkRequestOptions withTag(String tag) => copyWith(tags: {...?tags, tag});
 }

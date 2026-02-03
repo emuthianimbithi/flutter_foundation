@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foundation_auth/foundation_auth.dart';
 import 'package:go_router/go_router.dart';
@@ -8,9 +8,13 @@ import 'package:go_router/go_router.dart';
 import 'deep_link_handler.dart';
 import 'providers.dart';
 import 'routes.dart';
+import 'routing_options.dart';
+import 'redirect_policy.dart';
+import 'default_pages.dart';
 
 /// Router configuration allowing host apps to plug in pages.
 class AppRouterConfig {
+  final RoutingOptions options;
   final WidgetBuilder splashBuilder;
   final WidgetBuilder loginBuilder;
   final WidgetBuilder orgSelectBuilder;
@@ -19,26 +23,27 @@ class AppRouterConfig {
   final WidgetBuilder forbiddenBuilder;
 
   const AppRouterConfig({
-    this.splashBuilder = _defaultSplash,
-    this.loginBuilder = _defaultLogin,
-    this.orgSelectBuilder = _defaultOrg,
-    this.mfaBuilder = _defaultMfa,
-    this.homeBuilder = _defaultHome,
-    this.forbiddenBuilder = _defaultForbidden,
-  });
+    this.options = const RoutingOptions(),
+    WidgetBuilder? splashBuilder,
+    WidgetBuilder? loginBuilder,
+    WidgetBuilder? orgSelectBuilder,
+    WidgetBuilder? mfaBuilder,
+    WidgetBuilder? homeBuilder,
+    WidgetBuilder? forbiddenBuilder,
+  })  : splashBuilder = splashBuilder ?? _defaultSplash,
+        loginBuilder = loginBuilder ?? _defaultLogin,
+        orgSelectBuilder = orgSelectBuilder ?? _defaultOrg,
+        mfaBuilder = mfaBuilder ?? _defaultMfa,
+        homeBuilder = homeBuilder ?? _defaultHome,
+        forbiddenBuilder = forbiddenBuilder ?? _defaultForbidden;
 
   static Widget _defaultSplash(BuildContext _) =>
-      const PlaceholderPage('Splash (override in AppRouterConfig)');
-  static Widget _defaultLogin(BuildContext _) =>
-      const PlaceholderPage('Login (override in AppRouterConfig)');
-  static Widget _defaultOrg(BuildContext _) =>
-      const PlaceholderPage('Org Select (override in AppRouterConfig)');
-  static Widget _defaultMfa(BuildContext _) =>
-      const PlaceholderPage('MFA (override in AppRouterConfig)');
-  static Widget _defaultHome(BuildContext _) =>
-      const PlaceholderPage('Home (override in AppRouterConfig)');
-  static Widget _defaultForbidden(BuildContext _) =>
-      const PlaceholderPage('Forbidden (override in AppRouterConfig)');
+      const SplashPage(appName: 'Loading...');
+  static Widget _defaultLogin(BuildContext _) => const DefaultLoginPage();
+  static Widget _defaultOrg(BuildContext _) => const DefaultOrgSelectionPage();
+  static Widget _defaultMfa(BuildContext _) => const DefaultMfaPage();
+  static Widget _defaultHome(BuildContext _) => const _HomePlaceholder();
+  static Widget _defaultForbidden(BuildContext _) => const ForbiddenPage();
 }
 
 /// GoRouter setup with redirects driven by [AuthState].
@@ -51,13 +56,20 @@ class AppRouterConfig {
 class AppRouter {
   final Ref ref;
   final AppRouterConfig config;
+  final RoutingOptions options;
   late final GoRouter router;
+  late final RedirectPolicy _redirectPolicy;
 
-  AppRouter({required this.ref, required this.config}) {
+  AppRouter({required this.ref, required this.config})
+      : options = config.options {
     final deepLinkHandler = ref.read(deepLinkHandlerProvider);
+    _redirectPolicy = options.mode == RoutingMode.simple
+        ? const NoAuthRedirectPolicy()
+        : AuthRedirectPolicy(
+            options: options, deepLinkHandler: deepLinkHandler);
 
     router = GoRouter(
-      initialLocation: AppRoutes.splash,
+      initialLocation: options.initialRoute,
       routes: <RouteBase>[
         GoRoute(
           name: AppRouteNames.splash,
@@ -96,45 +108,26 @@ class AppRouter {
       ),
       redirect: (context, state) {
         // Allow deep link mapping hook
-        final mapped = deepLinkHandler.mapIncomingUri(state.uri);
-        if (mapped != null && mapped != state.matchedLocation) {
-          return mapped;
+        if (options.enableDeepLinks) {
+          final mapped = deepLinkHandler.mapIncomingUri(state.uri);
+          if (mapped != null && mapped != state.matchedLocation) {
+            return mapped;
+          }
         }
 
         final authState = ref.read(authControllerProvider);
 
-        final loc = state.matchedLocation;
+        final queued = deepLinkHandler.takeIfReady(authState, options);
+        if (queued != null && queued != state.matchedLocation) {
+          return queued;
+        }
 
-        final isAtSplash = loc == AppRoutes.splash;
-        final isAtLogin = loc == AppRoutes.login;
-        final isAtOrg = loc == AppRoutes.orgSelect;
-        final isAtMfa = loc == AppRoutes.mfa;
-
-        // State-specific redirects
-        return authState.when(
-          unauthenticated: () {
-            // Let splash render once, then bounce to login
-            if (isAtLogin) return null;
-            if (isAtSplash) return AppRoutes.login;
-            // allow forbidden route
-            if (loc == AppRoutes.forbidden) return null;
-            return AppRoutes.login;
-          },
-          requiresOrgSelection: (orgs, token) {
-            if (isAtOrg) return null;
-            return AppRoutes.orgSelect;
-          },
-          requiresMfa: (token, methods) {
-            if (isAtMfa) return null;
-            return AppRoutes.mfa;
-          },
-          authenticated: (session) {
-            // If user is authenticated but somehow at login/org/mfa/splash, go home.
-            if (isAtLogin || isAtOrg || isAtMfa || isAtSplash) {
-              return AppRoutes.home;
-            }
-            return null;
-          },
+        return _redirectPolicy.redirect(
+          authState: authState,
+          request: RedirectRequest(
+            matchedLocation: state.matchedLocation,
+            uri: state.uri,
+          ),
         );
       },
       navigatorKey: GlobalKey<NavigatorState>(),
@@ -143,6 +136,15 @@ class AppRouter {
       ],
     );
   }
+}
+
+class _HomePlaceholder extends StatelessWidget {
+  const _HomePlaceholder();
+
+  @override
+  Widget build(BuildContext context) => const Scaffold(
+        body: Center(child: Text('Provide a homeBuilder to AppRouterConfig.')),
+      );
 }
 
 /// Allows GoRouter to refresh when a stream emits.

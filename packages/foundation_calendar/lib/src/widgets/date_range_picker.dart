@@ -6,7 +6,8 @@ class DateRangePicker extends StatefulWidget {
   final DateRange? initialRange;
   final ValueChanged<DateRange> onSelected;
 
-  const DateRangePicker({super.key, this.initialRange, required this.onSelected});
+  const DateRangePicker(
+      {super.key, this.initialRange, required this.onSelected});
 
   @override
   State<DateRangePicker> createState() => _DateRangePickerState();
@@ -32,7 +33,8 @@ class _DateRangePickerState extends State<DateRangePicker> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FoundationButton(
-            label: _start == null ? 'Pick start date' : 'Start: ${_fmt(_start!)}',
+            label:
+                _start == null ? 'Pick start date' : 'Start: ${_fmt(_start!)}',
             variant: FoundationButtonVariant.secondary,
             onPressed: () async {
               final d = await showDatePicker(

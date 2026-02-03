@@ -30,7 +30,8 @@ class NetworkImageView extends StatelessWidget {
         width: width,
         height: height,
         fit: fit,
-        placeholder: (_, __) => const Center(child: CircularProgressIndicator()),
+        placeholder: (_, __) =>
+            const Center(child: CircularProgressIndicator()),
         errorWidget: (_, __, ___) => const Icon(Icons.broken_image_outlined),
       ),
     );

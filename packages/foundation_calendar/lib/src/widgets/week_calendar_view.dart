@@ -44,7 +44,7 @@ class WeekCalendarView extends ConsumerWidget {
   }
 
   String _weekdayName(int w) {
-    const names = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     return names[w - 1];
   }
 }

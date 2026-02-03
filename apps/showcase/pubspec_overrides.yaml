@@ -1,0 +1,25 @@
+# melos_managed_dependency_overrides: foundation_analytics,foundation_calendar,foundation_chat,foundation_config,foundation_core,foundation_device,foundation_forms,foundation_media,foundation_notifications,foundation_payments,foundation_ui,protobuf
+dependency_overrides:
+  foundation_analytics:
+    path: ../../packages/foundation_analytics
+  foundation_calendar:
+    path: ../../packages/foundation_calendar
+  foundation_chat:
+    path: ../../packages/foundation_chat
+  foundation_config:
+    path: ../../packages/foundation_config
+  foundation_core:
+    path: ../../packages/foundation_core
+  foundation_device:
+    path: ../../packages/foundation_device
+  foundation_forms:
+    path: ../../packages/foundation_forms
+  foundation_media:
+    path: ../../packages/foundation_media
+  foundation_notifications:
+    path: ../../packages/foundation_notifications
+  foundation_payments:
+    path: ../../packages/foundation_payments
+  foundation_ui:
+    path: ../../packages/foundation_ui
+  protobuf: 4.2.0

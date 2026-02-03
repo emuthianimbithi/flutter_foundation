@@ -98,7 +98,8 @@ extension StringExtensions on String {
   /// Masks this string, showing only [visibleChars] characters at the end.
   String mask({int visibleChars = 4, String maskChar = '*'}) {
     if (length <= visibleChars) return maskChar * length;
-    return maskChar * (length - visibleChars) + substring(length - visibleChars);
+    return maskChar * (length - visibleChars) +
+        substring(length - visibleChars);
   }
 
   /// Checks if this string contains only digits.
@@ -204,6 +205,5 @@ extension NullableStringExtensions on String? {
   String get orEmpty => this ?? '';
 
   /// Returns this string or [defaultValue] if null or empty.
-  String orDefault(String defaultValue) =>
-      isNullOrEmpty ? defaultValue : this!;
+  String orDefault(String defaultValue) => isNullOrEmpty ? defaultValue : this!;
 }

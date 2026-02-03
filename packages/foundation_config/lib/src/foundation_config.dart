@@ -149,11 +149,13 @@ class FoundationConfig {
     }
 
     // Determine defaults based on environment
-    final effectiveEnableAnalytics = enableAnalytics ?? environment.isProduction;
+    final effectiveEnableAnalytics =
+        enableAnalytics ?? environment.isProduction;
     final effectiveEnableCrashReporting =
         enableCrashReporting ?? environment.isProduction;
     final effectiveEnableLogging = enableLogging ?? environment.isDebug;
-    final effectiveLogLevel = logLevel ?? (environment.isDebug ? 'debug' : 'warning');
+    final effectiveLogLevel =
+        logLevel ?? (environment.isDebug ? 'debug' : 'warning');
 
     // Create config
     _config = AppConfig(

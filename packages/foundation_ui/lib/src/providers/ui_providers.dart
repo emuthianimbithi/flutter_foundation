@@ -10,5 +10,6 @@ final brandConfigProvider = StateProvider<BrandConfig>((ref) {
 
 final themeDataProvider = Provider<ThemeData>((ref) {
   final brand = ref.watch(brandConfigProvider);
-  return FoundationTheme.materialTheme(scheme: brand.scheme, tokens: brand.tokens);
+  return FoundationTheme.materialTheme(
+      scheme: brand.scheme, tokens: brand.tokens);
 });

@@ -67,13 +67,15 @@ class Result<T> extends Equatable {
   bool get isFailure => _either.isLeft();
 
   /// Gets the success value, throwing if this is a failure.
-  T get value => _either.getOrElse((l) => throw StateError('Result is a failure: $l'));
+  T get value =>
+      _either.getOrElse((l) => throw StateError('Result is a failure: $l'));
 
   /// Gets the success value or null if this is a failure.
   T? get valueOrNull => _either.fold((_) => null, (r) => r);
 
   /// Gets the failure, throwing if this is a success.
-  Failure get failure => _either.fold((l) => l, (_) => throw StateError('Result is a success'));
+  Failure get failure =>
+      _either.fold((l) => l, (_) => throw StateError('Result is a success'));
 
   /// Gets the failure or null if this is a success.
   Failure? get failureOrNull => _either.fold((l) => l, (_) => null);
@@ -101,8 +103,7 @@ class Result<T> extends Equatable {
   T getOrElse(T defaultValue) => _either.getOrElse((_) => defaultValue);
 
   /// Returns the result of [fn] if this is a failure.
-  T getOrElseLazy(T Function(Failure failure) fn) =>
-      _either.fold(fn, (r) => r);
+  T getOrElseLazy(T Function(Failure failure) fn) => _either.fold(fn, (r) => r);
 
   /// Executes [fn] if this is a success.
   Result<T> tap(void Function(T value) fn) {

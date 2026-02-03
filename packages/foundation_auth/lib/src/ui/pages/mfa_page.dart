@@ -35,10 +35,13 @@ class _MfaPageState extends ConsumerState<MfaPage> {
 
   Future<void> _verify() async {
     setState(() => _loading = true);
-    final res = await ref.read(authControllerProvider.notifier).verifyMfa(mfaToken: widget.mfaToken, method: _method, code: _code.text.trim());
+    final res = await ref.read(authControllerProvider.notifier).verifyMfa(
+        mfaToken: widget.mfaToken, method: _method, code: _code.text.trim());
     if (res.isFailure) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(res.failureOrNull?.message ?? 'MFA verification failed')),
+        SnackBar(
+            content:
+                Text(res.failureOrNull?.message ?? 'MFA verification failed')),
       );
     }
     if (mounted) setState(() => _loading = false);
@@ -59,11 +62,15 @@ class _MfaPageState extends ConsumerState<MfaPage> {
               items: widget.methods
                   .map((m) => DropdownMenuItem(value: m, child: Text(m)))
                   .toList(growable: false),
-              onChanged: _loading ? null : (v) => setState(() => _method = v ?? _method),
+              onChanged: _loading
+                  ? null
+                  : (v) => setState(() => _method = v ?? _method),
               decoration: const InputDecoration(labelText: 'Method'),
             ),
             const SizedBox(height: 12),
-            TextField(controller: _code, decoration: const InputDecoration(labelText: 'Code')),
+            TextField(
+                controller: _code,
+                decoration: const InputDecoration(labelText: 'Code')),
             const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
