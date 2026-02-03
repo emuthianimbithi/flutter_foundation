@@ -1,0 +1,16 @@
+name: foundation_forms
+description: Form widgets, validators, and Riverpod-friendly form state for fast app building.
+version: 0.1.0
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1
+  foundation_ui:
+    path: ../foundation_ui
+  foundation_media:
+    path: ../foundation_media
+  foundation_device:
+    path: ../foundation_device

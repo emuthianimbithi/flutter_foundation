@@ -1,0 +1,159 @@
+name: flutter_foundation
+repository: https://github.com/emuthianimbithi/flutter_foundation
+
+packages:
+  - packages/**
+  - apps/**
+
+sdkPath: .fvm/flutter_sdk
+
+command:
+  version:
+    workspaceChangelog: true
+    updateGitTagRefs: true
+    linkToCommits: true
+    branch: main
+
+  bootstrap:
+    runPubGetInParallel: true
+    enforceLockfile: false
+
+scripts:
+  # ─────────────────────────────────────────────────────────────
+  # ANALYSIS & FORMATTING
+  # ─────────────────────────────────────────────────────────────
+  analyze:
+    description: Run dart analyze in all packages
+    run: melos exec -- dart analyze --fatal-infos
+    packageFilters:
+      flutter: true
+      dirExists: lib
+
+  format:
+    description: Format all Dart files
+    run: melos exec -- dart format .
+    packageFilters:
+      flutter: true
+      dirExists: lib
+
+  format:check:
+    description: Check formatting without changes
+    run: melos exec -- dart format --set-exit-if-changed .
+    packageFilters:
+      flutter: true
+      dirExists: lib
+
+  # ─────────────────────────────────────────────────────────────
+  # TESTING
+  # ─────────────────────────────────────────────────────────────
+  test:
+    description: Run tests in all packages
+    run: melos exec -- flutter test --coverage
+    packageFilters:
+      flutter: true
+      dirExists: test
+
+  test:unit:
+    description: Run unit tests only
+    run: melos exec -- flutter test --coverage --tags=unit
+    packageFilters:
+      flutter: true
+      dirExists: test
+
+  test:integration:
+    description: Run integration tests
+    run: melos exec -- flutter test integration_test
+    packageFilters:
+      flutter: true
+      dirExists: integration_test
+
+  # ─────────────────────────────────────────────────────────────
+  # CODE GENERATION
+  # ─────────────────────────────────────────────────────────────
+  generate:
+    description: Run build_runner in all packages
+    run: melos exec -- dart run build_runner build --delete-conflicting-outputs
+    packageFilters:
+      flutter: true
+      dependsOn: build_runner
+
+  generate:watch:
+    description: Run build_runner watch in all packages
+    run: melos exec -- dart run build_runner watch --delete-conflicting-outputs
+    packageFilters:
+      flutter: true
+      dependsOn: build_runner
+
+  # ─────────────────────────────────────────────────────────────
+  # DRIFT DATABASE
+  # ─────────────────────────────────────────────────────────────
+  drift:schema:
+    description: Export Drift schema for migrations
+    run: melos exec -- dart run drift_dev schema dump lib/src/database/database.dart drift_schemas/
+    packageFilters:
+      scope: foundation_storage
+
+  drift:steps:
+    description: Generate Drift migration steps
+    run: melos exec -- dart run drift_dev schema steps drift_schemas/ lib/src/database/schema_versions.dart
+    packageFilters:
+      scope: foundation_storage
+
+  # ─────────────────────────────────────────────────────────────
+  # CLEANING
+  # ─────────────────────────────────────────────────────────────
+  clean:
+    description: Clean all packages
+    run: melos exec -- flutter clean
+
+  clean:deep:
+    description: Deep clean including generated files
+    run: |
+      melos exec -- flutter clean
+      melos exec -- rm -rf .dart_tool build pubspec.lock
+
+  # ─────────────────────────────────────────────────────────────
+  # PUBLISHING (for private pub server or git tags)
+  # ─────────────────────────────────────────────────────────────
+  publish:check:
+    description: Check packages are ready to publish
+    run: melos exec -- dart pub publish --dry-run
+    packageFilters:
+      flutter: true
+      private: false
+
+  # ─────────────────────────────────────────────────────────────
+  # QUALITY CHECKS (CI)
+  # ─────────────────────────────────────────────────────────────
+  ci:
+    description: Run all CI checks
+    run: |
+      melos run format:check
+      melos run analyze
+      melos run test
+
+  # ─────────────────────────────────────────────────────────────
+  # UPGRADE DEPENDENCIES
+  # ─────────────────────────────────────────────────────────────
+  upgrade:
+    description: Upgrade all dependencies
+    run: melos exec -- flutter pub upgrade
+
+  upgrade:major:
+    description: Upgrade all dependencies including major versions
+    run: melos exec -- flutter pub upgrade --major-versions
+
+  # ─────────────────────────────────────────────────────────────
+  # SHOWCASE APP
+  # ─────────────────────────────────────────────────────────────
+  showcase:run:
+    description: Run the showcase app
+    run: cd apps/showcase && flutter run
+
+  showcase:build:android:
+    description: Build showcase APK
+    run: cd apps/showcase && flutter build apk --release
+
+  showcase:build:ios:
+    description: Build showcase IPA
+    run: cd apps/showcase && flutter build ios --release --no-codesign

@@ -1,0 +1,12 @@
+name: foundation_chat
+description: Reusable chat UI components (messages, bubbles, input, typing indicator) for Flutter apps.
+version: 0.1.0
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1
+  foundation_ui:
+    path: ../foundation_ui

@@ -1,0 +1,26 @@
+name: foundation_routing
+description: Routing & deep-link foundation package built on go_router + Riverpod.
+version: 0.1.0
+homepage: https://example.com
+publish_to: "none"
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1
+  go_router: ^14.2.0
+  foundation_core:
+    path: ../foundation_core
+  foundation_auth:
+    path: ../foundation_auth
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:

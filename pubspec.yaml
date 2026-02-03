@@ -1,0 +1,15 @@
+name: flutter_foundation_workspace
+description: Flutter Foundation - A comprehensive Flutter component library for B2B and consumer apps
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
+
+# This is the workspace root - not a publishable package
+publish_to: none
+
+# Workspace dependencies shared across packages
+dependencies: {}
+
+dev_dependencies:
+  melos: ^6.1.0

@@ -1,0 +1,10 @@
+name: foundation_analytics
+description: Analytics, logging, and crash reporting abstractions with Riverpod.
+version: 0.1.0
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1

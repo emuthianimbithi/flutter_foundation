@@ -1,0 +1,16 @@
+name: foundation_device
+description: "Device features: camera/scanner hooks, biometrics, share/export, device info, and permission helpers."
+version: 0.1.0
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1
+  foundation_ui:
+    path: ../foundation_ui
+  permission_handler: ^11.3.1
+  share_plus: ^10.0.3
+  device_info_plus: ^10.1.2
+  local_auth: ^2.3.0

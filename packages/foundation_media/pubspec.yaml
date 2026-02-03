@@ -1,0 +1,14 @@
+name: foundation_media
+description: "Media utilities and widgets: image picker hooks, gallery, video/audio wrappers, and media cache."
+version: 0.1.0
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1
+  foundation_ui:
+    path: ../foundation_ui
+  cached_network_image: ^3.4.1
+  path_provider: ^2.1.4

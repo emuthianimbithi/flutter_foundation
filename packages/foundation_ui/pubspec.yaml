@@ -1,0 +1,11 @@
+name: foundation_ui
+description: Themeable, white-label ready UI primitives and common widgets for Flutter apps.
+version: 0.1.0
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1
+  equatable: ^2.0.5

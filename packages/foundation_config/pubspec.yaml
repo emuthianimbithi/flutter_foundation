@@ -1,0 +1,33 @@
+name: foundation_config
+description: Environment and application configuration for Flutter Foundation packages.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  foundation_core:
+    path: ../foundation_core
+  
+  # Riverpod for state management
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+  
+  # Package info
+  package_info_plus: ^8.0.0
+  
+  # Device info
+  device_info_plus: ^10.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.9
+  riverpod_generator: ^2.4.0
+  mocktail: ^1.0.3

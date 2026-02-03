@@ -1,0 +1,11 @@
+name: foundation_permissions
+description: Unified permission handling with Riverpod and reusable UI.
+version: 0.1.0
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1
+  permission_handler: ^11.3.1

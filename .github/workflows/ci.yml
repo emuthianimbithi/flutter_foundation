@@ -1,0 +1,244 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: "3.24.0"
+
+jobs:
+  # ─────────────────────────────────────────────────────────────
+  # ANALYZE & FORMAT
+  # ─────────────────────────────────────────────────────────────
+  analyze:
+    name: Analyze & Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Install Melos
+        run: dart pub global activate melos
+
+      - name: Bootstrap
+        run: melos bootstrap
+
+      - name: Check formatting
+        run: melos run format:check
+
+      - name: Analyze
+        run: melos run analyze
+
+  # ─────────────────────────────────────────────────────────────
+  # TEST ALL PACKAGES
+  # ─────────────────────────────────────────────────────────────
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: analyze
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Install Melos
+        run: dart pub global activate melos
+
+      - name: Bootstrap
+        run: melos bootstrap
+
+      - name: Generate code
+        run: melos run generate
+
+      - name: Run tests
+        run: melos run test
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          files: "**/coverage/lcov.info"
+          fail_ci_if_error: false
+
+  # ─────────────────────────────────────────────────────────────
+  # TEST INDIVIDUAL PACKAGES (matrix)
+  # ─────────────────────────────────────────────────────────────
+  test-packages:
+    name: Test ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    needs: analyze
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - foundation_core
+          - foundation_config
+          - foundation_storage
+          - foundation_networking
+          - foundation_auth
+          - foundation_sync
+          - foundation_routing
+          - foundation_notifications
+          - foundation_permissions
+          - foundation_analytics
+          - foundation_security
+          - foundation_i18n
+          - foundation_ui
+          - foundation_forms
+          - foundation_onboarding
+          - foundation_device
+          - foundation_maps
+          - foundation_calendar
+          - foundation_media
+          - foundation_chat
+          - foundation_payments
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Install Melos
+        run: dart pub global activate melos
+
+      - name: Bootstrap
+        run: melos bootstrap
+
+      - name: Check if package exists
+        id: check
+        run: |
+          if [ -d "packages/${{ matrix.package }}" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate code
+        if: steps.check.outputs.exists == 'true'
+        run: |
+          cd packages/${{ matrix.package }}
+          if grep -q "build_runner" pubspec.yaml; then
+            dart run build_runner build --delete-conflicting-outputs
+          fi
+
+      - name: Run tests
+        if: steps.check.outputs.exists == 'true'
+        run: |
+          cd packages/${{ matrix.package }}
+          if [ -d "test" ]; then
+            flutter test --coverage
+          else
+            echo "No tests directory found, skipping"
+          fi
+
+  # ─────────────────────────────────────────────────────────────
+  # BUILD SHOWCASE APP
+  # ─────────────────────────────────────────────────────────────
+  build-showcase:
+    name: Build Showcase
+    runs-on: ubuntu-latest
+    needs: [analyze, test]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Install Melos
+        run: dart pub global activate melos
+
+      - name: Bootstrap
+        run: melos bootstrap
+
+      - name: Generate code
+        run: melos run generate
+
+      - name: Check if showcase exists
+        id: check
+        run: |
+          if [ -d "apps/showcase" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build APK
+        if: steps.check.outputs.exists == 'true'
+        run: |
+          cd apps/showcase
+          flutter build apk --debug
+
+      - name: Upload APK
+        if: steps.check.outputs.exists == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: showcase-apk
+          path: apps/showcase/build/app/outputs/flutter-apk/app-debug.apk
+
+  # ─────────────────────────────────────────────────────────────
+  # DRIFT SCHEMA VALIDATION
+  # ─────────────────────────────────────────────────────────────
+  drift-schema:
+    name: Validate Drift Schema
+    runs-on: ubuntu-latest
+    needs: analyze
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Install Melos
+        run: dart pub global activate melos
+
+      - name: Bootstrap
+        run: melos bootstrap
+
+      - name: Check if storage package exists
+        id: check
+        run: |
+          if [ -d "packages/foundation_storage" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate Drift code
+        if: steps.check.outputs.exists == 'true'
+        run: |
+          cd packages/foundation_storage
+          if grep -q "drift" pubspec.yaml; then
+            dart run build_runner build --delete-conflicting-outputs
+          fi
+
+      - name: Validate schema
+        if: steps.check.outputs.exists == 'true'
+        run: |
+          cd packages/foundation_storage
+          if [ -d "drift_schemas" ]; then
+            dart run drift_dev schema verify lib/src/database/database.dart drift_schemas/
+          fi

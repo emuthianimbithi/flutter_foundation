@@ -1,0 +1,43 @@
+name: foundation_storage
+description: Storage solutions for Flutter Foundation - secure storage, SQLite (Drift), preferences, file storage.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  foundation_core:
+    path: ../foundation_core
+  
+  # Riverpod
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+  
+  # Secure storage
+  flutter_secure_storage: ^9.0.0
+  
+  # SQLite with Drift
+  drift: ^2.16.0
+  sqlite3_flutter_libs: ^0.5.20
+  path_provider: ^2.1.2
+  path: ^1.9.0
+  
+  # Shared preferences
+  shared_preferences: ^2.2.2
+  
+  # Encryption
+  encrypt: ^5.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.9
+  drift_dev: ^2.16.0
+  riverpod_generator: ^2.4.0
+  mocktail: ^1.0.3

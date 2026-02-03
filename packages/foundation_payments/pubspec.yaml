@@ -1,0 +1,12 @@
+name: foundation_payments
+description: Payment abstractions + modern payment UI (Stripe/PayPal/IAP adapters via interfaces).
+version: 0.1.0
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1
+  foundation_ui:
+    path: ../foundation_ui

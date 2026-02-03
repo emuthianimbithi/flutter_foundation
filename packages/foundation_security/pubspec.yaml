@@ -1,0 +1,11 @@
+name: foundation_security
+description: "Security utilities: certificate pinning, root/jailbreak detection, screenshot prevention."
+version: 0.1.0
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1
+  http: ^1.2.2

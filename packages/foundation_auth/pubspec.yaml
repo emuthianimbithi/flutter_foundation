@@ -1,0 +1,40 @@
+name: foundation_auth
+description: Auth state machine + token/session management for Marulla SSO (gRPC-first) with Riverpod.
+version: 0.1.0
+homepage: https://github.com/yourorg/flutter_foundation
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Workspace deps (resolved via melos/path overrides in the monorepo)
+  foundation_core:
+    path: ../foundation_core
+  foundation_config:
+    path: ../foundation_config
+  foundation_storage:
+    path: ../foundation_storage
+  foundation_networking:
+    path: ../foundation_networking
+
+  # Proto stubs (consumer supplies via git/path; keep as 'any' for flexibility)
+  marulla_protos:
+    git:
+      url: https://github.com/emuthianimbithi/protos.git
+      ref: dev
+      path: gen/dart/marulla_protos
+
+  flutter_riverpod: ^2.6.1
+  riverpod: ^2.6.1
+
+  grpc: ^3.2.4
+  meta: ^1.11.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  lints: ^5.0.0

@@ -1,0 +1,15 @@
+name: foundation_maps
+description: Maps abstraction with Google Maps + Mapbox adapters, markers, clustering hooks, geofencing hooks, and location service.
+version: 0.1.0
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1
+  foundation_ui:
+    path: ../foundation_ui
+  geolocator: ^12.0.0
+  google_maps_flutter: ^2.9.0
+  mapbox_maps_flutter: ^2.3.0
